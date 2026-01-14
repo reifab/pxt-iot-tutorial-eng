@@ -60,10 +60,10 @@ The goal is to show the current soap level on the IoT Cube.
 * Put the variable ``||variables:seifenstandInProzent||`` 🧼 in the first input of **plot bar graph of**.
 * Set the range from **seifenstandInProzent** 🧼 to 100.
 * 📥 Press `|Download|` and check the LED display:
-🟥🟥🟥🟥🟥
-🟥🟥🟥🟥🟥
-🟥🟥🟥🟥🟥
-🟥🟥🟥🟥🟥
+🟥🟥🟥🟥🟥<br>
+🟥🟥🟥🟥🟥<br>
+🟥🟥🟥🟥🟥<br>
+🟥🟥🟥🟥🟥<br>
 🟥🟥🟥🟥🟥
 Are all LEDs on?
 
@@ -107,10 +107,10 @@ To avoid the level dropping below 0%, we need another condition that checks whet
 [Here you can find more information about logical operators](https://makecode.microbit.org/blocks/logic/boolean)
 * 📥 Press `|Download|` and check the 🟥 LED display. Press button A several times until the soap level would drop below 0%.
 
-⬛⬛🟥⬛⬛
-🟥🟥🟥🟥🟥
-🟥🟥🟥🟥🟥
-🟥🟥🟥🟥🟥
+⬛⬛🟥⬛⬛<br>
+🟥🟥🟥🟥🟥<br>
+🟥🟥🟥🟥🟥<br>
+🟥🟥🟥🟥🟥<br>
 🟥🟥🟥🟥🟥
 What happens? Does the display stay at 0?
 
