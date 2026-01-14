@@ -142,11 +142,11 @@ Until now the number of people is only shown in the 'forever' loop and not yet s
 * Replace the block ``||basic:showNumber(anzahlPersonenInWarteschlange)||`` with ``||functions:call sendeUndZeigePersonenanzahl||``.
 * 📥 Press `|Download|` and check the LED display 🟥 and the OLED display 🖥️:
 Test whether the people are correctly counted when you place, for example, three Duplo figures 🦹‍♂️. Right after the number is shown, the loading bar should appear on the OLED display 🖥️ for 5 seconds.<br />
-🟥🟥🟥🟥🟥
-⬛⬛⬛⬛🟥
-🟥🟥🟥🟥🟥
-⬛⬛⬛⬛🟥
-🟥🟥🟥🟥🟥
+🟥🟥🟥🟥🟥<br>
+⬛⬛⬛⬛🟥<br>
+🟥🟥🟥🟥🟥<br>
+⬛⬛⬛⬛🟥<br>
+🟥🟥🟥🟥🟥<br>
 
 ```blocks
 //@hide

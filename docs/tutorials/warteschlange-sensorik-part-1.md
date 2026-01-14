@@ -251,11 +251,11 @@ Use ``||logic:if true then||``, ``||logic:0 < 0||``, and
 * 📥 Press `|Download|` and check the LED display 🟥.
   * Is the person at the first position counted correctly?
   * Do you already have ideas how to count people at all nine positions? <br />
-⬛⬛🟥⬛⬛
-⬛🟥🟥⬛⬛
-⬛⬛🟥⬛⬛
-⬛⬛🟥⬛⬛
-⬛🟥🟥🟥⬛
+⬛⬛🟥⬛⬛<br>
+⬛🟥🟥⬛⬛<br>
+⬛⬛🟥⬛⬛<br>
+⬛⬛🟥⬛⬛<br>
+⬛🟥🟥🟥⬛<br>
 
 ```blocks
 // @hide
@@ -368,11 +368,11 @@ basic.forever(function () {
 * Remove all ``||basic:pause (ms)||`` blocks from the code; they are no longer needed.
 * Add a line break using ``||SmartfeldAktoren:new line||`` directly after the brightness difference is written on the OLED display 🖥️.
 * 📥 Press `|Download|` and test whether the people are correctly counted when you place, for example, three Duplo figures 🦹‍♂️.<br />
-🟥🟥🟥🟥🟥
-⬛⬛⬛⬛🟥
-🟥🟥🟥🟥🟥
-⬛⬛⬛⬛🟥
-🟥🟥🟥🟥🟥
+🟥🟥🟥🟥🟥<br>
+⬛⬛⬛⬛🟥<br>
+🟥🟥🟥🟥🟥<br>
+⬛⬛⬛⬛🟥<br>
+🟥🟥🟥🟥🟥<br>
 
 ```blocks
 //@hide

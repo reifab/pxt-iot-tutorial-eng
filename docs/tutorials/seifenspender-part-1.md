@@ -64,7 +64,7 @@ The goal is to show the current soap level on the IoT Cube.
 🟥🟥🟥🟥🟥<br>
 🟥🟥🟥🟥🟥<br>
 🟥🟥🟥🟥🟥<br>
-🟥🟥🟥🟥🟥
+🟥🟥🟥🟥🟥<br>
 Are all LEDs on?
 
 ```blocks
@@ -111,7 +111,7 @@ To avoid the level dropping below 0%, we need another condition that checks whet
 🟥🟥🟥🟥🟥<br>
 🟥🟥🟥🟥🟥<br>
 🟥🟥🟥🟥🟥<br>
-🟥🟥🟥🟥🟥
+🟥🟥🟥🟥🟥<br>
 What happens? Does the display stay at 0?
 
 ```blocks
