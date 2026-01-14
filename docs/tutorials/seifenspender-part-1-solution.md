@@ -4,11 +4,11 @@ sensors=github:Smartfeld/pxt-sensorikAktorikSmartfeld
 ```
 ### @explicitHints false
 
-# Seifenspender Teil 1
-## Lösung
+# Soap Dispenser Part 1
+## Solution
 
-* Unten die Lösung von Tutorial Teil 1 
-* Drücke 📥 `|Download|` und teste das Programm.
+* Below is the solution for Tutorial Part 1.
+* Press 📥 `|Download|` and test the program.
 
 ```template
 let seifenstandInProzent = 100

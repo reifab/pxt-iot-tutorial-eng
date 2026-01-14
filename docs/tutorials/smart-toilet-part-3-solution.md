@@ -4,11 +4,11 @@ sensors=github:Smartfeld/pxt-sensorikAktorikSmartfeld
 ```
 ### @explicitHints false
 
-# Smart Toilet Teil 3
-## Lösung
+# Smart Toilet Part 3
+## Solution
 
-* Unten die Lösung von Tutorial Teil 3 
-* Drücke 📥 `|Download|` und teste das Programm.
+* Below is the solution for Tutorial Part 3.
+* Press 📥 `|Download|` and test the program.
 
 ```template
 function macheFrei () {

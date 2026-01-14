@@ -4,17 +4,17 @@ sensors=github:Smartfeld/pxt-sensorikAktorikSmartfeld
 ```
 ### @explicitHints false
 
-# Seifenspender Teil 2
-## Lösung
+# Soap Dispenser Part 2
+## Solution
 
-* Unten die Lösung von Tutorial Teil 2 
-* Drücke 📥 `|Download|` und teste das Programm.
+* Below is the solution for Tutorial Part 2.
+* Press 📥 `|Download|` and test the program.
 
 ```template
 
-function initialisiereLoRaVerbindung () {
+function initializeLoRaConnection () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -26,14 +26,14 @@ function initialisiereLoRaVerbindung () {
         basic.pause(1000)
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(50)
     }
     smartfeldAktoren.oledClear()
@@ -44,10 +44,10 @@ seifenstandInProzent,
 100
 )
 smartfeldAktoren.oledInit(128, 64)
-initialisiereLoRaVerbindung()
+initializeLoRaConnection()
 IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
 IoTCube.SendBufferSimple()
-warte5SekundenUndZeigeFortschritt()
+wait5SecondsAndShowProgress()
 basic.forever(function () {
     if (input.buttonIsPressed(Button.A)) {
         seifenstandInProzent += -20
@@ -60,7 +60,7 @@ basic.forever(function () {
         )
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
     }
     if (input.buttonIsPressed(Button.B)) {
         seifenstandInProzent = 100
@@ -70,7 +70,7 @@ basic.forever(function () {
         )
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
     }
     basic.pause(150)
     basic.clearScreen()

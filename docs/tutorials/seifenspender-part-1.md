@@ -4,74 +4,68 @@ sensors=github:Smartfeld/pxt-sensorikAktorikSmartfeld
 ```
 ### @explicitHints false
 
-# IoT Tutorial Teil 1
+# IoT Tutorial Part 1
 
+## 📗 Introduction, Part 1
 
-## 📗 Einführung,  Teil 1
+**Prerequisites**
+* micro:bit basics:
+    * You can create programs and download them.
+    * You know the entry points "on start" and "forever".
+    * You know that programs are usually executed step by step (top to bottom). You can also use loops and conditions.
+    * You understand that categories contain blocks (for example ``||basic:Basic||``) that can be used in programs.
+    * Variables can be created, used, and changed.
 
-**Voraussetzungen**
-* Micro:Bit Basics: 
-    * Du kannst Programme erstellen und herunterladen.
-    * Du kennst die Einstiegspunkte "Beim Start" und "Dauerhaft".
-    * Dir ist klar, dass Programme in der Regel schrittweise (von oben nach unten) abgearbeitet werden. Zudem kannst Du Schleifen und Verzweigungen einsetzen.
-    * Es ist bekannt, dass Kategorien einzelne Blöcke (z.B. ``||basic:Grundlagen||``) beinhalten, welche in Programmen genutzt werden können.
-    * Variablen können erstellt, verwendet und verändert werden
+**Learning outcome**
 
-**Lernergebnis**
+In this tutorial you build a program step by step that simulates a soap level and sends it to the internet via 🛜 LoRa. At the end you will have a working program that...
 
-In diesem Tutorial baust du Schritt für Schritt ein Programm auf, 
-das einen Seifenstand simuliert und über 🛜 LoRa ins Internet sendet. Am Ende hast 
-du ein funktionsfähiges Programm, das...
+* displays the soap level 🧼.
+* reduces or refills the soap level with ``||input:button presses||``:
+    * ``||input:button A is pressed||``: the soap level 🧼 is reduced by 20%.
+    * ``||input:button B is pressed||``: the soap level 🧼 is set back to 100%.
 
-* den Seifenstand 🧼 anzeigt.
-* per ``||Input:Knopfdruck||`` den Seifenstand reduziert oder wieder auffüllt:
-    * ``||Input:Knopf A ist geklickt||``: Seifenstand 🧼 wird durch Knopf A um 20% reduziert.
-    * ``||Input:Knopf B ist geklickt||``: Seifenstand 🧼 wird durch Knopf B wieder auf 100% aufgefüllt.
+**Difficulty:** 🔥🔥⚪⚪
 
-**Schwierigkeitsgrad:** 🔥🔥⚪⚪
-
-Klicke auf das 💡- Symbol, falls Du zusätzliche Hilfe brauchst und um deinen Code zu überprüfen.
+Click the 💡 icon if you need extra help and want to check your code.
 
 ```blocks
-//Super! Du hast den Hinweis gefunden. Nutze ihn, wenn du nicht weiterkommst.
+// Great! You found the hint. Use it if you get stuck.
 let hinweisGefunden = true;
 ```
 
-## 👁️ Voraussetzungen @showdialog
-* Für Teil 1 brauchst Du grundsätzlich nur einen Micro:Bit. 
-* Falls du lieber gleich den IoT- Cube nehmen möchtest, kannst du ihn so anschliessen. Achte auf
-die rote Markierung:
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/iot-cube-anschliessen-klein.png)
-* Stelle die Schalter vorerst so ein:
-    * Battery Switch: **off**
-    * LoRa Module: **on**
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/iot-cube-power-switches-klein.png)
-* Überprüfe, ob der micro:bit verbunden ist.
+## 👁️ Prerequisites @showdialog
+* For Part 1 you only need a micro:bit.
+* If you want to use the IoT Cube right away, connect it like this. Watch the red marking:
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/iot-cube-anschliessen-klein.png)
+* Set the switches for now:
+    * Battery switch: **off**
+    * LoRa module: **on**
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/iot-cube-power-switches-klein.png)
+* Check that the micro:bit is connected.
 
-## 🧼 Variable für den Seifenstand
-Um den Seifenstand des Seifenspenders zu speichern, nutzen wir eine Variable.
-* Um den aktuellen Seifenstand zu speichern, benötigen wir eine Variable, die den Seifenstand in Prozent anzeigt: 
-``||variables:Erstelle eine Variable...||`` und benenne sie mit **seifenstandInProzent** 🧼.
-* Der Seifenspender ist am Beginn vollständig gefüllt. Setze deshalb ``||basic:beim Start||`` den Seifenstand auf 100 %. Nutze dazu die zuvor angelegte Variable: ``||variables:setze seifenstandInProzent auf 100||``🧼
-
-
+## 🧼 Variable for the soap level
+To store the soap level of the dispenser, we use a variable.
+* To store the current soap level, we need a variable that shows the level in percent:
+``||variables:Make a Variable...||`` and name it **seifenstandInProzent** 🧼.
+* The dispenser is full at the beginning. Therefore, set the soap level to 100% in ``||basic:on start||`` using the variable: ``||variables:set seifenstandInProzent to 100||`` 🧼.
 
 ```blocks
 let seifenstandInProzent = 100
 ```
 
-## 🧼 Seifenstand anzeigen
-Ziel ist es, den aktuellen Seifenstand am IoT Cube anzuzeigen.
-* Hol dir den Block ``||led:Zeichne Säulendiagramm||``🟥 und ziehe diesen in den Block **beim Start** direkt unter die Variable **seifenstandInProzent**🧼
-* Setze die Variable ``||variables:seifenstandInProzent||``🧼 in das erste Feld des Befehls **zeichne Säulendiagramm von**. 
-* Ändere den Bereich von **seifenstandInProzent**🧼 bis 100. 
-* 📥 Drücke `|Download|` und kontrolliere die LED-Anzeige:  
-🟥🟥🟥🟥🟥  
-🟥🟥🟥🟥🟥  
-🟥🟥🟥🟥🟥  
-🟥🟥🟥🟥🟥  
-🟥🟥🟥🟥🟥  
-Leuchten alle LEDs?
+## 🧼 Show the soap level
+The goal is to show the current soap level on the IoT Cube.
+* Get the block ``||led:plot bar graph||``🟥 and place it in the **on start** block directly under the variable **seifenstandInProzent** 🧼.
+* Put the variable ``||variables:seifenstandInProzent||`` 🧼 in the first input of **plot bar graph of**.
+* Set the range from **seifenstandInProzent** 🧼 to 100.
+* 📥 Press `|Download|` and check the LED display:
+🟥🟥🟥🟥🟥
+🟥🟥🟥🟥🟥
+🟥🟥🟥🟥🟥
+🟥🟥🟥🟥🟥
+🟥🟥🟥🟥🟥
+Are all LEDs on?
 
 ```blocks
 let seifenstandInProzent = 100
@@ -82,17 +76,14 @@ seifenstandInProzent,
 )
 ```
 
-## ➖ Seifenstand reduzieren mit Knopf A
-Ziel ist es bei jedem Knopfdruck auf A den Seifenstand jeweils um 20% zu reduzieren.
-Dazu benötigen wir eine Verzweigung, die prüft, ob Knopf A gedrückt wurde. Wenn dies der Fall ist, 
-dann soll der Seifenstand um 20% reduziert werden.
-* Um diese Verzweigung einzufügen, hol dir den Block ``||Logic:wenn wahr dann||`` und 
-ziehe ihn in die bestehende ``||basic:dauerhaft||`` Schleife
-* Schiebe einen neuen Block ``||Input:Knopf A ist geklickt||`` auf das Feld ``wahr``
-* Ändere die Variable ``||variables:seifenstandInProzent||`` 🧼 um -20.
-* Zeichne erneut das Säulendiagramm.🟥 Dupliziere diesen Teil aus ``beim Start``
-* Verzögere die bestehende ``||basic:dauerhaft||`` Schleife zum Schluss nach dem bestehenden 
-``||Logic:wenn wahr dann||`` Block um 150 ms mit ``||basic:pausiere (ms)||``.
+## ➖ Reduce soap level with button A
+The goal is to reduce the soap level by 20% each time button A is pressed.
+For this we need a condition that checks whether button A is pressed. If it is pressed, the soap level should be reduced by 20%.
+* To add this condition, get the block ``||logic:if true then||`` and place it in the existing ``||basic:forever||`` loop.
+* Drag a new block ``||input:button A is pressed||`` into the **true** field.
+* Change the variable ``||variables:seifenstandInProzent||`` 🧼 by -20.
+* Plot the bar graph again.🟥 Duplicate this part from ``on start``.
+* At the end, slow down the ``||basic:forever||`` loop by 150 ms with ``||basic:pause (ms)||``.
 
 ```blocks
 basic.forever(function () {
@@ -109,25 +100,19 @@ basic.forever(function () {
 })
 ```
 
-## 🧼 Füllstand kleiner 0 verhindern
-Um zu vermeiden, dass der Füllstand unter 0% fällt, benötigen wir eine weitere Bedingung, 
-die prüft, ob der Seifenstand unter 0% gefallen ist. Wenn dies der Fall ist, soll der
-Seifenstand auf 0% gesetzt werden.
-* Ergänze unter dem Block ``||variables:ändere seifenstandInProzent um -20||`` 
-einen weiteren Block ``||Logic:wenn wahr dann||`` und überprüfe, ob der 
-``||seifenstandInProzent < 0||`` ist. Wenn ja, dann setze den 
-``||variables:seifenstandInProzent auf 0||``.
-* Setze den ``||variables:seifenstandInProzent||`` auf 0% in dem du den Seifenstand 🧼 
-auf 0 setzt.
-[Hier findest du weitere Informationen zu logischen Operatoren](https://makecode.microbit.org/blocks/logic/boolean)
-* 📥 Drücke `|Download|` und kontrolliere die 🟥 LED-Anzeige. Drücke öfters Knopf A, bis der Seifenstand unter 0% fällt. 
+## 🧼 Prevent the level from going below 0
+To avoid the level dropping below 0%, we need another condition that checks whether the soap level is below 0. If it is, set the soap level to 0%.
+* Under the block ``||variables:change seifenstandInProzent by -20||``, add another ``||logic:if true then||`` block and check whether ``||seifenstandInProzent < 0||``. If yes, set ``||variables:set seifenstandInProzent to 0||``.
+* Set the variable ``||variables:seifenstandInProzent||`` to 0% by setting the soap level 🧼 to 0.
+[Here you can find more information about logical operators](https://makecode.microbit.org/blocks/logic/boolean)
+* 📥 Press `|Download|` and check the 🟥 LED display. Press button A several times until the soap level would drop below 0%.
 
-⬛⬛🟥⬛⬛  
-🟥🟥🟥🟥🟥  
-🟥🟥🟥🟥🟥  
-🟥🟥🟥🟥🟥  
-🟥🟥🟥🟥🟥  
-Was passiert? Bleibt die LED-Anzeige bei 0 stehen?  
+⬛⬛🟥⬛⬛
+🟥🟥🟥🟥🟥
+🟥🟥🟥🟥🟥
+🟥🟥🟥🟥🟥
+🟥🟥🟥🟥🟥
+What happens? Does the display stay at 0?
 
 ```blocks
 basic.forever(function () {
@@ -147,17 +132,15 @@ basic.forever(function () {
 })
 ```
 
-## ➕ Seifenspender auffüllen mit Knopf B
-Nun wollen wir den Seifenstand 🧼 wieder auffüllen, wenn Knopf B gedrückt wird.
-Dazu benötigen wir eine Bedingung, die prüft, ob Knopf B gedrückt wurde. Wenn dies der Fall ist, soll der Seifenstand 🧼 auf 100% gesetzt werden.
-* Hol dir den Block ``||Logic:wenn wahr dann||`` und ziehe ihn in
-die bestehende ``||basic:dauerhaft||`` Schleife, oberhalb von ``||basic:pausiere (ms)||``
-* Schiebe den Block ``||Input:Knopf A ist geklickt||`` auf das Feld ``wahr``
-und ändere Knopf A zu Knopf **B**
-* Setze den Seifenstand auf 100% indem du die Variable ``||variables:seifenstandInProzent||``🧼 auf 100 setzt.
-* Zeichne erneut das Säulendiagramm. Kopiere diesen Teil aus ``beim Start``
-* 📥 Drücke `|Download|` und kontrolliere die 🟥 LED-Anzeige... 
-Füllt sich der Seifenstand auf 100% auf?
+## ➕ Refill the dispenser with button B
+Now we want to refill the soap level 🧼 when button B is pressed.
+We need a condition that checks whether button B is pressed. If it is, the soap level 🧼 should be set to 100%.
+* Get the block ``||logic:if true then||`` and place it in the existing ``||basic:forever||`` loop, above ``||basic:pause (ms)||``.
+* Drag the block ``||input:button A is pressed||`` into the **true** field and change button A to button **B**.
+* Set the soap level to 100% by setting the variable ``||variables:seifenstandInProzent||`` 🧼 to 100.
+* Plot the bar graph again. Copy this part from ``on start``.
+* 📥 Press `|Download|` and check the 🟥 LED display.
+Does the soap level fill back up to 100%?
 
 ```blocks
 basic.forever(function () {
@@ -187,9 +170,7 @@ basic.forever(function () {
 })
 ```
 
-## Gratuliere 🏆 - du hast den Teil 1 erfolgreich bearbeitet 🚀
+## Congratulations 🏆 - you have successfully completed Part 1 🚀
 
-* Weiter gehts mit Teil 2: [Teil 2](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-2)
-* Falls irgendwas noch nicht richtig läuft, hier hast Du eine funktionierende Version zum testen: [Lösung Teil 1](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-1-solution)
-
-
+* Continue with Part 2: [Part 2](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-2)
+* If something is not working yet, here is a working version to test: [Solution Part 1](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-1-solution)
