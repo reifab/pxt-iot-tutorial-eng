@@ -1,38 +1,35 @@
-# Tutorial: Warteschlangen-Sensorik für den IoT Cube
+# Tutorial: Queue Sensor System for the IoT Cube
 
-## Wichtige Hinweise zu Beginn:
-* Fenster vergrössern: Zieh dieses Browser-Fenster oder das MakeCode-Fenster grösser, damit du alles gut sehen kannst.
-* Scrollen nicht vergessen: Scrolle immer ganz nach unten, um wirklich alle Schritte zu sehen. Sonst verpasst du Teile des Tutorials!
-* Auf Links klicken: Wenn du eine blau unterstrichene Stelle (Link) siehst, musst du darauf klicken. Dort geht das Tutorial weiter oder es öffnet sich ein zusätzlicher Inhalt.
+## Important notes before you start
+* Enlarge the window: Make this browser window or the MakeCode window larger so you can see everything well.
+* Do not forget to scroll: Always scroll all the way down to see every step. Otherwise you will miss parts of the tutorial.
+* Click on links: If you see blue underlined text (a link), click it. The tutorial continues there or additional content opens.
 
-## 📗 Einführung
+## 📗 Introduction
 
-Stell dir vor, du möchtest automatisiert herausfinden, wie viele Personen vor 
-einer smarten Toilette warten. In diesem Projekt baust du eine neunkanalige 
-Lichtschranke💡👁️, die mit relativ einfacher Technik auskommt: 
-einem RGB-LED-Streifen💡 und einem Lichtsensor 👁️.
+Imagine you want to automatically find out how many people are waiting in front of a smart toilet. In this project you build a nine-channel light barrier 💡👁️ that uses simple technology: an RGB LED strip 💡 and a light sensor 👁️.
 
-* Voraussetzungen: 🌱 IoT Basics abgeschlossen und Warteschlange ohne Sensorik umgesetzt (nur mit Tasten A und B), siehe Tutorials hier: [Warteschlange ohne Sensorik](https://makecode.microbit.org/#tutorial:github:fave-smartfeld/pxt-smart-toilet-tutorial/docs/tutorials/warteschlange)
+* Prerequisites: 🌱 IoT Basics completed and queue without sensors implemented (only with buttons A and B), see tutorials here: [Queue without sensors](https://makecode.microbit.org/#tutorial:github:fave-smartfeld/pxt-smart-toilet-tutorial/docs/tutorials/warteschlange)
 
-* Schwierigkeitsgrad: 🔥🔥🔥🔥
+* Difficulty: 🔥🔥🔥🔥
 
-In diesem Tutorial baust du Schritt für Schritt ein Programm auf, das die wartenden Personen (Duplo-Figuren) zählt und die erfassten Daten per 🛜 LoRa ins Internet sendet.
+In this tutorial you build a program step by step that counts the waiting people (Duplo figures) and sends the captured data to the internet via 🛜 LoRa.
 
-Das Tutorial ist in zwei Teile aufgeteilt. Im ersten Teil kümmerst du dich um die Sensorik, im zweiten Teil überträgst du die Anzahl Personen ins Internet:
+The tutorial is split into two parts. In the first part you focus on the sensor system, in the second part you send the number of people to the internet:
 
-* [Teil 1 - noch ohne Internetverbindung](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/warteschlange-sensorik-part-1)
-* [Teil 2 - mit Internetverbindung](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/warteschlange-sensorik-part-2)
+* [Part 1 - still without internet connection](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/warteschlange-sensorik-part-1)
+* [Part 2 - with internet connection](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/warteschlange-sensorik-part-2)
 
-Tipp: Scrolle in jedem Tutorial-Schritt ganz nach unten und klicke erst dann auf den Weiter-Button, damit du nichts übersiehst!
+Tip: In each step, scroll all the way down and only then click the next button so you do not miss anything.
 
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/iot-cube-anschliessen-klein.png)
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/iot-cube-anschliessen-klein.png)
 
-## Start Teil 1
+## Start Part 1
 
-👉 **Klicke auf den Button unten, um mit Teil 1 zu beginnen:**
+👉 **Click the button below to start Part 1:**
 
-[▶️ Starte Teil 1 – noch ohne Internetverbindung](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/warteschlange-sensorik-part-1)
+[▶️ Start Part 1 - still without internet connection](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/warteschlange-sensorik-part-1)
 
 ---
 
-⚠️ **Wichtig:** Klicke *nicht* auf "Fertig", sondern nutze den Link oben!
+⚠️ **Important:** Do *not* click "Done". Use the link above.

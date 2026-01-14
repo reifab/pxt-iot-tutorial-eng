@@ -5,44 +5,38 @@ neopixel=github:microsoft/pxt-neopixel#v0.7.6
 ```
 ### @explicitHints false
 
-# Warteschlangen-Sensorik Teil 1
+# Queue Sensor System Part 1
 
-## 🎬 Messprinzip 
+## 🎬 Measurement principle
 
-Wir beleuchten nacheinander bestimmte Positionen mit einer LED💡und messen 
-mit dem Lichtsensor👁️, wie viel Licht jeweils ankommt.
-Steht etwas zwischen Sensor👁️ und LED💡, zum Beispiel eine Lego-Figur🦹‍♂️, 
-verringert sich die Helligkeit.
-So erkennen wir, ob an einer bestimmten Position etwas im Lichtstrahl steht.
-Die Messungen werden an neun Positionen in der Warteschlange nacheinander 
-vorgenommen, sodass die Lego-Figuren🦹‍♂️gezählt werden können.
+We light up specific positions one after another with an LED 💡 and measure with the light sensor 👁️ how much light arrives.
+If something is between the sensor 👁️ and the LED 💡, for example a LEGO figure 🦹‍♂️, the brightness decreases.
+This tells us if something is standing in the light beam at a certain position.
+We take measurements at nine positions in the queue one after another so the LEGO figures 🦹‍♂️ can be counted.
 
-Schau Dir dieses Video an, welches das Messprinzip illustriert:
-* [Video🎬 ansehen: Warteschlange Sensorik](https://wiki.smartfeld.ch/lib/exe/fetch.php?media=warteschlange_sensorik.mp4)
+Watch this video that illustrates the measurement principle:
+* [Watch video 🎬: Queue sensor system](https://wiki.smartfeld.ch/lib/exe/fetch.php?media=warteschlange_sensorik.mp4)
 
-## 👁️ Hardware- Voraussetzungen @showdialog
-* Du brauchst dieses Kunststoffteil: [Wartebereich als Kunststoffteil](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/3dModel/warteschlange3dViewer.html)
-* Falls du das Teil selbst 3D- Drucken möchtest, lade das STL- File hier herunter: [🌍STL-3D-Modell](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/3dModel/Wartebereich.stl)
-* Schliesse den RGB-LED-Streifen💡 an **J7** an.
-* Verbinde den Lichtsensor👁️ an **J0** mit dem IoT Cube.
-* Schliesse das OLED- Display 🖥️  an **J5** an. 
+## 👁️ Hardware prerequisites @showdialog
+* You need this plastic part: [Waiting area as plastic part](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/3dModel/warteschlange3dViewer.html)
+* If you want to 3D print the part yourself, download the STL file here: [🌍STL 3D model](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/3dModel/Wartebereich.stl)
+* Connect the RGB LED strip 💡 to **J7**.
+* Connect the light sensor 👁️ to **J0** on the IoT Cube.
+* Connect the OLED display 🖥️ to **J5**.
 
-## 💡 LEDs in Betrieb nehmen
+## 💡 Power up the LEDs
 
-Wir wollen zu Beginn die erste LED, welche im 3D- Modell hinter einem Loch
-hervorscheint blinken lassen. Auf dem 16er- LED streifen wäre dies die LED
-mit Index **2**.
+At the beginning we want the first LED (in the 3D model it shines through a hole) to blink. On the 16 LED strip this is LED index **2**.
 
-* ``||basic:beim Start||`` initialisierst Du den LED-Streifen mit ``||neopixel:setze strip auf NeoPixels an Pin||`` **P1** mit **16** Pixeln und im Modus RGB.
-* Unter **...mehr** findest du den Block ``||neopixel:setzeHelligkeit||``, womit du die Helligkeit auf 255 setzt.
-* In der ``dauerhaft``- Schleife verwendest Du den Block ``||neopixel:strip setze Farbe von Neopixel||`` **2** auf **schwarz**  (unter **...mehr**)
-* darunter verwendest Du den Block ``||neopixel:strip anzeigen||``
-* ``||basic:pausiere (ms)||`` nach dem Anzeigen für 100 ms
-* danach den Block ``||neopixel:strip setze Farbe von Neopixel||`` **2** auf **weiss**  (unter **...mehr**)
-* darunter verwendest Du den Block ``||neopixel:strip anzeigen||``
-* ``||basic:pausiere (ms)||`` nach dem Anzeigen für 200 ms
-* 📥 Drücke `|Download|` und kontrolliere, ob die LED 2 (erste LED in der Warteschlange) 
-blinkt.
+* In ``||basic:on start||`` initialize the LED strip with ``||neopixel:set strip to NeoPixels at pin||`` **P1** with **16** pixels and RGB mode.
+* Under **...more** you can find ``||neopixel:set brightness||`` and set it to 255.
+* In the ``forever`` loop use ``||neopixel:strip set pixel color||`` **2** to **black** (under **...more**).
+* Under it use ``||neopixel:strip show||``.
+* ``||basic:pause (ms)||`` after showing for 100 ms.
+* Then use ``||neopixel:strip set pixel color||`` **2** to **white** (under **...more**).
+* Under it use ``||neopixel:strip show||``.
+* ``||basic:pause (ms)||`` after showing for 200 ms.
+* 📥 Press `|Download|` and check if LED 2 (first LED in the queue) blinks.
 
 ```blocks
 let strip = neopixel.create(DigitalPin.P1, 16, NeoPixelMode.RGB)
@@ -57,32 +51,25 @@ basic.forever(function () {
 })
 ```
 
-## 🔍 Helligkeit messen und anzeigen auf OLED- Display 
+## 🔍 Measure brightness and show it on the OLED display
 
-Nun messen wir mit dem Sonnenlichtsensor 👁️ zweimal die Helligkeit,
-einmal mit LED- Beleuchtung und einmal ohne (nur Fremdlicht) und zeigen
-die Werte auf dem Display an.
+Now we measure the brightness with the sunlight sensor 👁️ twice: once with LED lighting and once without (ambient light only), and show the values on the display.
 
-* ``||basic:beim Start||`` initialisierst du das Display mit 🖥️ ``||SmartfeldAktoren:init OLED Breite 128 Höhe 64||`` 
-*  ``||basic:beim Start||`` initialisierst Du den Sonnenlichtsensor mit ``||SmartfeldSensoren:init Sonnenlicht Sensor||``
-* Setze den Block 🖥️ ``||SmartfeldAktoren:Lösche Displayinhalt||``
-zuoberst in der Dauerhaft-Schleife ein.
-*  ``||variables:Erstelle eine Variable...||`` und benenne sie mit **h_umgebung**.
-* In der ``dauerhaft`` - Schleife verwendest du den Block ``||variables:setze lichtmessung auf 0||``
-* ersetze die 0 durch eine Messung mit ``||SmartfeldSensoren:gib sichtbares Licht [lm]||`` und
-führe diese Messung direkt nach dem ersten **strip anzeigen** durch.
-* Unter der Messung setzt du den Block ``||SmartfeldAktoren:schreibe Nummer||``
-ein. 
-* Ersetze die 0 mit der Variable ``||variables:h_umgebung||``
-* Setze den Block  ``||SmartfeldAktoren:schreibe String "-" ||``ein, um einen Bindestrich
-(als Trennzeichen zum nächsten Messwert) auf dem Display🖥️ auszugeben.
-* ``||variables:Erstelle eine Variable...||`` und benenne sie mit **h_mitLED**.
-* Wiederhole die Messung sowie die Anzeige unter Verwendung der Variable **h_mitLED**. Die Messung kannst Du nach dem zweiten **strip anzeigen** einfügen. 
-* 📥 Drücke `|Download|` und beobachte die Werte auf dem Display🖥️ . Beantworte
-für dich folgende Fragen:
-  * Wie gross ist der Unterschied der Messwerte (Umgebungslicht - Licht mit LED)
-  * Wie stark lassen sich die Werte von Fremdlicht beeinflussen?
-  * Wie stark streuen die Messwerte bei scheinbar konstantem Fremdlicht?
+* In ``||basic:on start||`` initialize the display with 🖥️ ``||SmartfeldAktoren:init OLED width 128 height 64||``.
+* In ``||basic:on start||`` initialize the sunlight sensor with ``||SmartfeldSensoren:init sunlight sensor||``.
+* Place the block 🖥️ ``||SmartfeldAktoren:clear display||`` at the top of the forever loop.
+* ``||variables:Make a Variable...||`` and name it **h_umgebung**.
+* In the ``forever`` loop use ``||variables:set lichtmessung to 0||``.
+* Replace 0 with a measurement ``||SmartfeldSensoren:visible light [lm]||`` and perform this measurement directly after the first **strip show**.
+* Under the measurement add ``||SmartfeldAktoren:write number||``.
+* Replace the 0 with the variable ``||variables:h_umgebung||``.
+* Add ``||SmartfeldAktoren:write string "-"||`` to show a dash as a separator on the OLED display 🖥️.
+* ``||variables:Make a Variable...||`` and name it **h_mitLED**.
+* Repeat the measurement and display using **h_mitLED**. You can insert this measurement after the second **strip show**.
+* 📥 Press `|Download|` and observe the values on the OLED display 🖥️. Answer these questions for yourself:
+  * How big is the difference between the values (ambient light - light with LED)?
+  * How strongly can ambient light influence the values?
+  * How much do the values vary with seemingly constant ambient light?
 
 ```blocks
 let h_umgebung = 0
@@ -115,37 +102,31 @@ basic.forever(function () {
 })
 ```
 
-## 🔍 Messfunktion (messeMax) für Mehrfachmessung erstellen
+## 🔍 Create a measurement function (messeMax) for repeated measurements
 
-Nach diesen Fragestellungen hast du wohlmöglich bemerkt, dass
-  * die Einzelmessungen auch unter gleichen Bedingungen 
-  relativ stark variieren, ca. +/- 40 Lumen
-  * Erhöht man das Fremdlicht, erhöht sich der Hell- sowie der Dunkelwert in etwa gleich
+After these observations you likely noticed that:
+  * single measurements vary quite a lot even under the same conditions (around +/- 40 lumens)
+  * if you increase ambient light, both the bright and dark values increase by a similar amount
 
-Gründe für die Unterschiede: Künstliches Licht (z. B. LEDs oder Neonröhren) 
-kann stark Flackern, auch wenn wir dies nicht wahrnehmen.
+Reason for the differences: Artificial light (for example LEDs or fluorescent tubes) can flicker strongly even if we do not notice it.
 
-Damit die Messung auch bei flackerndem Licht konstanter wird, 
-hilft folgender Trick:
-* Helligkeit mehrmals messen (z. B. 10-mal) und höchsten Wert bestimmen.
+To make the measurement more stable even with flickering light, this trick helps:
+* Measure brightness multiple times (for example 10 times) and take the highest value.
 
-Du baust jetzt diese Messfunktion nach, welche Dir im Tooltip
-(die 💡Glühbirne links unten) angezeigt wird.
+Now recreate this measurement function shown in the tooltip (the 💡 bulb in the lower left).
 
-* ``||functions:Erstelle eine Funktion...||`` (im Bereich Fortgeschritten zu finden)
-    * Benenne die Funktion mit **messeMax** und klicke auf **Fertig**.
-    * ``||variables:Erstelle eine Variable...||`` und benenne sie mit **ANZAHL_MESSUNGEN**. 
-    Initialisiere die Variable mit 10. 
-    * ``||variables:Erstelle eine Variable...||`` und benenne sie mit **maximum**.
-    Setze das Maximum vorerst auf 0. 
-    * ``||loops:für Index von 0 bis 4||`` 
-      * ersetze die 4 mit **ANZAHL_MESSUNGEN**.
-    * Bestimme mit dem Block ``||math:maximal||`` den grösseren der beiden 
-    Werte **maximum** oder dem Sensorwert 
-    ``||SmartfeldSensoren:gib sichtbares Licht[lm] ||``
-    und überschreibe damit die Variable **maximum**. Schau Dir den Tooltip 💡
-    dafür an.
-    * gib am Schluss das gerundete **maximum** zurück mithilfe den Blöcken ``||functions:0 zurückgeben||`` und ``||math:runden||``
+* ``||functions:Make a Function...||`` (found in Advanced)
+    * Name the function **messeMax** and click **Done**.
+    * ``||variables:Make a Variable...||`` and name it **ANZAHL_MESSUNGEN**.
+    Initialize the variable with 10.
+    * ``||variables:Make a Variable...||`` and name it **maximum**.
+    Set the maximum to 0 for now.
+    * ``||loops:for index from 0 to 4||``
+      * replace the 4 with **ANZAHL_MESSUNGEN**.
+    * Use ``||math:max||`` to select the larger of **maximum** and the sensor value
+    ``||SmartfeldSensoren:visible light [lm]||``
+    and overwrite **maximum**. Check the tooltip 💡 for this.
+    * Finally return the rounded **maximum** using ``||functions:return 0||`` and ``||math:round||``.
 
 ```blocks
 function messeMax () {
@@ -158,16 +139,14 @@ function messeMax () {
 }
 ```
 
-## 🔍 Mehrfachmessung (Funktion messeMax) einsetzen und testen
+## 🔍 Use and test repeated measurements (function messeMax)
 
-* Ersetze in der ``dauerhaft`` - Schleife die zwei Blöcke ``||SmartfeldSensoren:gib sichtbares Licht [lm]||``
-  durch je einen Funktionsaufruf ``||functions:Aufruf messeMax||``
-* 📥 Drücke `|Download|` und beobachte die Werte auf dem Display🖥️. Beantworte
-für dich folgende Fragen:
-  * Sind die Messwerte gegenüber vorher konstanter?
-  * Wie stark variieren die Werte noch bei gleichen Bedingungen?
-  * Könnte man das Umgebungslicht mathematisch herausfiltern mithilfe der
-  Umgebungsmessung?
+* Replace the two blocks ``||SmartfeldSensoren:visible light [lm]||`` in the ``forever`` loop
+  with the function call ``||functions:call messeMax||``.
+* 📥 Press `|Download|` and observe the values on the OLED display 🖥️. Answer these questions for yourself:
+  * Are the measurements more stable than before?
+  * How much do the values still vary under the same conditions?
+  * Could you mathematically filter out ambient light using the ambient measurement?
 
 ```blocks
 // @hide
@@ -209,25 +188,19 @@ basic.forever(function () {
 })
 ```
 
-## Änderung der Lichtstärke aufgrund der LED
+## Change in brightness caused by the LED
 
-Du hast nach Deinen Beobachtungen und Überlegungen möglicherweise erkannt, dass die 
-Messungen durch die Mehrfachmessung stabiler geworden sind 
-(nur noch ca. +/- 10 Lumen Unterschiede).
-Es müsste zudem möglich sein, das Umgebungslicht (h_umgebung) vom zweiten 
-Messwert (h_mitLED) abzuziehen, um das Umgebungslicht mathematisch zu eliminieren.
-Versuchen wir es!
+Based on your observations you may have realized that the measurements are more stable with repeated measurement (only around +/- 10 lumens differences).
+It should also be possible to subtract ambient light (h_umgebung) from the second measurement (h_mitLED) to mathematically eliminate ambient light.
+Let's try it.
 
-* ``||variables:Erstelle eine variable...||`` mit dem Namen h_unterschied
-* Nimm den Block ``||math:0 - 0||`` und ziehe das Umgebungslicht (h_umgebung) 
-vom zweiten Messwert (h_mitLED) ab.
-* Stelle auf dem Display🖥️ nur noch den Unterschied dar. Entferne die nicht 
-mehr benötigten Display- Ausgaben.
-* Die erste Pause kannst du ebenfalls entfernen, die zweite Pause ist immer noch sinnvoll, 
-damit du die Werte besser ablesen kannst.
-* 📥 Drücke `|Download|` und beobachte die Werte auf dem Display🖥️.
-  * Stelle eine Duplo- Figur zwischen LED und Lichtsensor.
-  * Beobachte, wie sich der Helligkeitsunterschied dabei verändert.
+* ``||variables:Make a Variable...||`` with the name h_unterschied.
+* Take the block ``||math:0 - 0||`` and subtract ambient light (h_umgebung) from the second measurement (h_mitLED).
+* Show only the difference on the OLED display 🖥️. Remove the display outputs that are no longer needed.
+* You can remove the first pause; the second pause is still useful so you can read the values.
+* 📥 Press `|Download|` and observe the values on the OLED display 🖥️.
+  * Place a Duplo figure between the LED and the light sensor.
+  * Observe how the brightness difference changes.
 
 ```blocks
 // @hide
@@ -267,25 +240,22 @@ basic.forever(function () {
 })
 ```
 
-## 👥 Figur erkennen und zählen
+## 👥 Detect and count a figure
 
-* ``||variables:Erstelle eine variable...||`` mit dem Namen **anzahlPersonenInWarteschlange** und
-setze sie zu beginn der ``dauerhaft``- Schleife auf 0. 
-* Prüfe am Schluss der ``dauerhaft``- Schleife, ob der Helligkeitsunterschied 
-(h_unterschied) kleiner als 100 ist (du kannst diesen Wert auch anpassen,
-falls nötig), dann soll die Anzahl **anzahlPersonenInWarteschlange** hochgezählt werden.
-Nutze dazu ``||logic:wenn wahr dann||`` sowie ``||logic:0 < 0||`` und 
-``||variables:ändere anzahlPersonenInWarteschlange um 1||``
-* Zeige **anzahlPersonenInWarteschlange** mit ``||basic:zeige Zahl ||`` auf dem Micro:Bit an.
-* 📥 Drücke `|Download|` und kontrolliere die  LED-Anzeige🟥. 
-  * Wird die Person an der ersten Stelle korrekt gezählt?
-  * Hast Du schon Ideen, wie man an allen neun Positionen Personen 
-  zählen könnte? <br />
-⬛⬛🟥⬛⬛  
-⬛🟥🟥⬛⬛  
-⬛⬛🟥⬛⬛  
-⬛⬛🟥⬛⬛  
-⬛🟥🟥🟥⬛  
+* ``||variables:Make a Variable...||`` with the name **anzahlPersonenInWarteschlange** and
+set it to 0 at the beginning of the ``forever`` loop.
+* At the end of the ``forever`` loop, check whether the brightness difference (h_unterschied) is less than 100 (you can adjust this value if needed). If so, increase **anzahlPersonenInWarteschlange**.
+Use ``||logic:if true then||``, ``||logic:0 < 0||``, and
+``||variables:change anzahlPersonenInWarteschlange by 1||``.
+* Show **anzahlPersonenInWarteschlange** with ``||basic:show number||`` on the micro:bit.
+* 📥 Press `|Download|` and check the LED display 🟥.
+  * Is the person at the first position counted correctly?
+  * Do you already have ideas how to count people at all nine positions? <br />
+⬛ ⬛ 🟥 ⬛ ⬛
+⬛ 🟥 🟥 ⬛ ⬛
+⬛ ⬛ 🟥 ⬛ ⬛
+⬛ ⬛ 🟥 ⬛ ⬛
+⬛ 🟥 🟥 🟥 ⬛
 
 ```blocks
 // @hide
@@ -332,16 +302,11 @@ basic.forever(function () {
 
 ```
 
-## Idee entwickeln für das Messen an verschiedenen Positionen
+## Develop an idea for measuring at different positions
 
-Wenn Du dir im Tooltip (``|💡|``Glühbirne links unten) den bisherigen Code in der 
-``dauerhaft`` Schleife ansiehst, könnte man auf die Idee kommen, den gelb 
-markierten Teil neunfach (einmal für jedes Loch im Modell) auszuführen, jedoch 
-mit einer kleinen Änderung: Die LED- Nummer muss bei jeder Ausführung um eins 
-erhöht werden. Natürlich könnte man dies durch stupides neunfaches kopieren 
-erreichen, ein Programmierer würde hier aber **eine Schleife drum herum** bauen.
+If you look at the code in the ``forever`` loop in the tooltip (``|💡|`` bulb in the lower left), you might get the idea to run the yellow marked part nine times (once for each hole in the model), but with a small change: the LED number must increase by one each time. You could do this by copying the code nine times, but a programmer would **wrap a loop around it**.
 
-* Sobald Du die grundlegende Idee verstanden hast, drücke auf ``|weiter|``
+* As soon as you understand the basic idea, press ``|next|``.
 
 ```blocks
 // @hide
@@ -395,28 +360,19 @@ basic.forever(function () {
 })
 
 ```
-## An mehreren Positionen Personen erkennen und zählen
+## Detect and count people at multiple positions
 
-* Bewerkstellige mit dem Block ``||loops:für Index von 0 bis 4|`` eine neunfache
-Ausführung der vorhergehend erwähnten Blöcken. Du musst dafür die Zahl von 4 auf 8
-ändern.
-* Ersetze die LED- Nummer (im Moment = 2) durch ``||math:0+0||``, wobei du 0 + 0
-wiederum änderst zu der Addition ``||variables:Index||``+ 2. Dies ist nötig, 
-damit zuerst die LED mit Index 2 brennt.
-* Schalte nach jedem Durchlauf (zuunterst in der Schleife), alle LEDs aus mit dem
-Block  ``||neopixel:strip ausschalten||``.
-* Entferne alle Blöcke ``||basic:pausiere (ms)||`` aus dem Code, diese sind nicht 
-mehr nötig.
-* Bewerkstellige einen Zeilenumbruch mit dem Block
-``||SmartfeldAktoren:Zeilenumbruch||`` direkt nach der Ausgabe 
-des Helligkeitsunterschieds auf dem OLED-Display🖥️.
-* 📥 Drücke `|Download|` und teste, ob die Personen beim Platzieren von z.B.
-drei Duplo- Figuren🦹‍♂️ korrekt gezählt werden.<br />
-🟥🟥🟥🟥🟥  
-⬛⬛⬛⬛🟥  
-🟥🟥🟥🟥🟥  
-⬛⬛⬛⬛🟥  
-🟥🟥🟥🟥🟥  
+* Use the block ``||loops:for index from 0 to 4||`` to run the previously mentioned blocks nine times. You need to change the 4 to 8.
+* Replace the LED number (currently = 2) with ``||math:0 + 0||`` and then change it to ``||variables:index|| + 2``. This is needed so the LED with index 2 lights up first.
+* After each pass (at the bottom of the loop) turn off all LEDs with ``||neopixel:strip clear||``.
+* Remove all ``||basic:pause (ms)||`` blocks from the code; they are no longer needed.
+* Add a line break using ``||SmartfeldAktoren:new line||`` directly after the brightness difference is written on the OLED display 🖥️.
+* 📥 Press `|Download|` and test whether the people are correctly counted when you place, for example, three Duplo figures 🦹‍♂️.<br />
+🟥 🟥 🟥 🟥 🟥
+⬛ ⬛ ⬛ ⬛ 🟥
+🟥 🟥 🟥 🟥 🟥
+⬛ ⬛ ⬛ ⬛ 🟥
+🟥 🟥 🟥 🟥 🟥
 
 ```blocks
 //@hide
@@ -467,52 +423,42 @@ basic.forever(function () {
 })
 ```
 
-## Schönere Ausgabe auf dem OLED- Display🖥️
+## Cleaner output on the OLED display 🖥️
 
-Die Ausgabe auf dem OLED- Display könnten wir noch etwas zweckmässiger gestalten.
-Für die Fehlersuche könnte es hilfreich sein, die LED- Position, den Messwert, 
-sowie die Auswertung (Person **X** / keine Person **-**) anzuzeigen. Beispiel-
-Ausgabe auf dem Display:
+We can make the OLED display output more useful. For troubleshooting it can help to show the LED position, the measurement value, and the evaluation (person **X** / no person **-**). Example output:
 
     P0: X :120
     P1: - :5
     P2: - :2
-    usw.
+    etc.
 
-* ``||functions:Erstelle eine Funktion...||`` (im Bereich Fortgeschritten zu finden)
-    * Füge drei Parameter hinzu: Zahl, Zahl und Text
-    * Benenne die Funktion mit **schreibeInfosAufDisplay** 
-    * Benenne **num** mit **position**
-    * Benenne **num2** mit **wert**
-    * Benenne **Text** mit **symbol** und klicke auf **Fertig**.
-*  ``||variables:Erstelle eine Variable...||`` und benenne sie mit **zeile**. 
-Darin wollen wir den Text einer Zeile (z.B. P0: X :120) abspeichern.
-* Nimm nun den Block ``||variables:setze zeile auf 0||`` und platziere ihn in die 
-erstellte Funktion.
-* Klappe ``||Fortgeschritten||`` auf. Unter ``Text`` findest Du den Block ``||text:verbinde "Hallo" "Welt" - +||``.
-Weise diesen Block der Variable **zeile** zu (anstelle der **0**). 
-* Verbinde nun den Text **"P"**, die Variable **position**, einen **": "**, die Variable **symbol**, ein **" :"**
-sowie die Variable **wert**. 
-* Danach zeigst Du die Variable ``||variables:zeile||`` mithilfe des Blocks 
-``||SmartfeldAktoren:Schreibe String und Zeilenumbruch||`` auf dem OLED-Display🖥️ an.
-* setze die Funktion ``||functions:schreibeInfosAufDisplay||`` nun in der ``dauerhaft`` Schleife an den 
-korrekten zwei Stellen ein, so wie im Tooltip (💡Links unten) angezeigt.
-* Bisherige OLED-Display- Ausgaben kannst du jetzt entfernen.
-* 📥 Drücke `|Download|` und teste, ob die OLED- Display🖥️- Ausgaben beim 
-Platzieren von z.B. drei Duplo- Figuren🦹‍♂️ korrekt angegeben werden 
-(Deine Ausgabe kann natürlich variieren):<br />
+* ``||functions:Make a Function...||`` (found in Advanced)
+    * Add three parameters: number, number, and text.
+    * Name the function **schreibeInfosAufDisplay**.
+    * Rename **num** to **position**.
+    * Rename **num2** to **wert**.
+    * Rename **text** to **symbol** and click **Done**.
+* ``||variables:Make a Variable...||`` and name it **zeile**.
+We will store the text of one line there (for example P0: X :120).
+* Take the block ``||variables:set zeile to 0||`` and place it in the created function.
+* Open ``||Advanced||``. Under ``Text`` you will find ``||text:join "Hello" "World" - +||``.
+Assign this block to the variable **zeile** (instead of **0**).
+* Now join the text **"P"**, the variable **position**, a **": "**, the variable **symbol**, a **" :"** and the variable **wert**.
+* Then show the variable ``||variables:zeile||`` on the OLED display 🖥️ using ``||SmartfeldAktoren:write string and new line||``.
+* Insert the function ``||functions:schreibeInfosAufDisplay||`` at the correct two spots in the ``forever`` loop as shown in the tooltip (💡 lower left).
+* You can now remove the previous OLED display outputs.
+* 📥 Press `|Download|` and test whether the OLED display 🖥️ output is correct when placing, for example, three Duplo figures 🦹‍♂️ (your output can vary):<br />
 
-    P0: X :120  
-    P1: - :5  
-    P2: - :2  
-    P3: X :204  
-    P4: - :4  
-    P5: - :2  
-    P6: X :140  
-    P7: - :2  
+    P0: X :120
+    P1: - :5
+    P2: - :2
+    P3: X :204
+    P4: - :4
+    P5: - :2
+    P6: X :140
+    P7: - :2
 
-* Falls Du eine andere Idee hast für die Visualisierung auf dem OLED- Display, 
-fühle Dich frei, etwas anderes zu programmieren!
+* If you have another idea for visualizing the OLED display, feel free to program something else!
 
 ```blocks
 //@highlight
@@ -568,7 +514,7 @@ basic.forever(function () {
 
 ```
 
-## Gratuliere 🏆 - du hast den Teil 1 erfolgreich bearbeitet 🚀
+## Congratulations 🏆 - you have successfully completed Part 1 🚀
 
-* Weiter gehts mit Teil 2: [Teil 2](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/warteschlange-sensorik-part-2)
-* Falls irgendwas noch nicht richtig läuft, hier hast Du eine funktionierende Version zum testen: [Lösung Teil 1](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/warteschlange-sensorik-part-1-solution)
+* Continue with Part 2: [Part 2](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/warteschlange-sensorik-part-2)
+* If something is not working yet, here is a working version to test: [Solution Part 1](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/warteschlange-sensorik-part-1-solution)

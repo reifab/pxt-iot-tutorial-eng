@@ -5,46 +5,45 @@ neopixel=github:microsoft/pxt-neopixel#v0.7.6
 ```
 ### @explicitHints false
 
-# Warteschlangen-Sensorik Teil 2
+# Queue Sensor System Part 2
 
-## 👁️ Voraussetzungen @showdialog
-* Schliesse den Cube so an, falls noch nicht gemacht:
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/iot-cube-anschliessen-klein.png)
-* Stelle die Schalter vorerst so ein:
-    * Battery Switch: **off**
-    * LoRa Module: **on**
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/iot-cube-power-switches-klein.png)
+## 👁️ Prerequisites @showdialog
+* Connect the Cube like this if you have not done so yet:
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/iot-cube-anschliessen-klein.png)
+* Set the switches for now:
+    * Battery switch: **off**
+    * LoRa module: **on**
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/iot-cube-power-switches-klein.png)
 
-* Ein LoRa-Gateway🛜 muss in Reichweite sein, welches mit TTN (The Things Network) verbunden ist.
-Dies ist im Klassensatz einmal vorhanden und kann hunderte von IoT-Cubes bedienen.
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/gateway-klein.png)
+* A LoRa gateway 🛜 must be in range and connected to TTN (The Things Network).
+In class there is one gateway that can serve hundreds of IoT Cubes.
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/gateway-klein.png)
 
+## Learning outcome
 
-## Lernergebnis
+From Tutorial Part 1 you already created a program that automatically counts the number of people in a queue.
+Now we want to send the number of people in the queue to the internet via LoRa 🛜. At the end you will have a working program that...
 
-Aus dem Tutorial Teil 1 hast du bereits ein Programm erstellt, welches die Anzahl an Personen einer Warteschlange automatisiert zählt.
-Nun wollen wir die Anzahl an Personen in der Warteschlange über LoRa🛜 ins Internet senden. Am Ende hast du ein funktionsfähiges Programm, das ...
+* Establishes a LoRa connection 🛜.
+* Sends the automatically detected number of people in the queue 👥 over LoRa 🛜.
 
-* Eine LoRa-Verbindung🛜 aufbaut. 
-* Die automatisch ermittelte Anzahl an Personen in der Warteschlange 👥 über LoRa🛜 sendet. 
+The full program from Part 1 is already included. You will also find three functions that we only need to use in this tutorial:
 
-Das vollständige Programm aus Teil 1 ist bereits integriert. Zudem findest Du drei Funktionen, welche wir in diesem Tutorial bloss noch anwenden:
+* initialisiereLoRaVerbindung(): builds a connection to the internet
+* warte5SekundenUndZeigeFortschritt(): wait function so values are not sent too often
+* sendeUndZeigePersonenanzahl(): sends the number of people in the queue
 
-* initialisiereLoRaVerbindung (): Baut eine Verbindung zum Internet auf
-* warte5SekundenUndZeigeFortschritt (): Warte- Funktion, um nicht zu oft Werte zu senden.
-* sendeUndZeigePersonenanzahl (): Sendet die Anzahl Personen in der Warteschlange
+If anything about these functions is unclear, consider first doing [Part 2 of the queue tutorial](https://makecode.microbit.org/#tutorial:github:fave-smartfeld/pxt-smart-toilet-tutorial/docs/tutorials/warteschlange-part-2).
 
-Falls dir bezüglich dieser Funktionen etwas unklar ist, überlege, vorgängig nochmals den [Teil 2 des Tutorials ](https://makecode.microbit.org/#tutorial:github:fave-smartfeld/pxt-smart-toilet-tutorial/docs/tutorials/warteschlange-part-2) zu bearbeiten.
+## 🛜 Establish the internet connection
 
-## 🛜 Verbindung mit Internet aufbauen
+At the start we build a connection to the internet. For that we need a function call.
 
-Zu Beginn bauen wir eine Verbindung zum Internet auf. Dazu benötigen wir einen Funktionsaufruf.
+* Get the block ``||functions:call initialisiereLoRaVerbindung||`` and place it at the bottom of **on start**.
 
-* Hol dir den Block ``||functions:Aufruf initialisiereLoRaVerbindung ||`` und ziehe diesen zuunterst in den Block **beim Start**.
-
-* 📥 Drücke `|Download|` und kontrolliere das OLED-Display🖥️:  
-Wird auf dem OLED- Display **Verbinde...** angezeigt? <br />
-Wird danach **Verbunden!** angezeigt? <br />
+* 📥 Press `|Download|` and check the OLED display 🖥️:
+Do you see **Connecting...** on the OLED display? <br />
+Do you then see **Connected!**? <br />
 
 ```blocks
 //@hide
@@ -66,7 +65,7 @@ function messeMax () {
 //@hide
 function initialisiereLoRaVerbindung () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -78,7 +77,7 @@ function initialisiereLoRaVerbindung () {
         smartfeldAktoren.oledWriteStr(".")
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
@@ -136,18 +135,18 @@ basic.forever(function () {
 
 ```
 
-## 🛜 Personenanzahl über LoRa senden
+## 🛜 Send the number of people via LoRa
 
-Bis jetzt wird die Personenanzahl in der 'Dauerhaft'- Schleife lediglich angezeigt, aber noch nicht gesendet. Dies wollen wir nun ändern:
+Until now the number of people is only shown in the 'forever' loop and not yet sent. Let's change that:
 
-* Ersetze den Block ``||basic:showNumber(anzahlPersonenInWarteschlange)||`` durch ``||functions:Aufruf sendeUndZeigePersonenanzahl||``.
-* 📥 Drücke `|Download|` und kontrolliere das LED-Anzeige🟥 und das OLED-Display🖥️:  
-Teste, ob die Personen beim Platzieren von z.B.drei Duplo- Figuren🦹‍♂️ korrekt gezählt werden. Direkt nach der Anzeige der Zahl müsste auch der Ladebalken auf dem OLED-Display🖥️ für 5 Sekunden erscheinen<br />
-🟥🟥🟥🟥🟥  
-⬛⬛⬛⬛🟥  
-🟥🟥🟥🟥🟥  
-⬛⬛⬛⬛🟥  
-🟥🟥🟥🟥🟥  
+* Replace the block ``||basic:showNumber(anzahlPersonenInWarteschlange)||`` with ``||functions:call sendeUndZeigePersonenanzahl||``.
+* 📥 Press `|Download|` and check the LED display 🟥 and the OLED display 🖥️:
+Test whether the people are correctly counted when you place, for example, three Duplo figures 🦹‍♂️. Right after the number is shown, the loading bar should appear on the OLED display 🖥️ for 5 seconds.<br />
+🟥 🟥 🟥 🟥 🟥
+⬛ ⬛ ⬛ ⬛ 🟥
+🟥 🟥 🟥 🟥 🟥
+⬛ ⬛ ⬛ ⬛ 🟥
+🟥 🟥 🟥 🟥 🟥
 
 ```blocks
 //@hide
@@ -169,7 +168,7 @@ function messeMax () {
 //@hide
 function initialisiereLoRaVerbindung () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -181,7 +180,7 @@ function initialisiereLoRaVerbindung () {
         smartfeldAktoren.oledWriteStr(".")
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
@@ -237,27 +236,25 @@ basic.forever(function () {
 })
 ```
 
+## ☁️ Create a dashboard in Clavis Cloud
 
-## ☁️ Dashboard erstellen auf Clavis Cloud 
+Now we visualize the data in Clavis Cloud ☁️.
+* Go to [🌍iot.claviscloud.ch](https://iot.claviscloud.ch/home).
+* Sign in (your teacher or course lead will give you the login info).
+* Expand your dashboard with a queue widget, if it is not there yet.
+* In the widget, choose your IoT Cube (as labeled) as the **data source** under **device**.
+* Choose **Ganzzahl_ID_0** as the **data key**.
+* Click **Save** and test whether the number of people is sent and displayed.
 
-Nun geht es an die Visualisierung der Daten auf der Clavis Cloud ☁️.
-* Rufe die Website [🌍iot.claviscloud.ch](https://iot.claviscloud.ch/home) auf.
-* Melde dich an (Login- Informationen kriegst Du von der Lehrperson/ Kursleitung).
-* Erweitere dein Dashboard mit einem Warteschlangen- Widget, falls noch nicht vorhanden.
-* Wähle im Widget als **Datenquelle** als **Gerät** deinen IoT- Cube (gemäss Aufschrift) aus.
-* Wähle als **Data key** **Ganzzahl_ID_0** aus.
-* Klicke auf **Speichern** und teste, ob die Anzahl Personen gesendet und dargestellt wird.
+## 🪫 Optimizations
 
-## 🪫 Optimierungen
+Currently, data is sent via LoRa after every counting cycle, no matter whether the number of waiting people has changed. It would save energy to send data only when there is actually a change in the number of waiting people.
 
-Derzeit werden nach jedem Zähldurchlauf Daten per LoRa übertragen, unabhängig davon, ob sich die Anzahl der wartenden Personen geändert hat. Energiesparender wäre es jedoch, die Daten nur dann zu senden, wenn tatsächlich eine Veränderung in der Anzahl der wartenden Personen festgestellt wurde.
-
-* ``||variables:Erstelle eine Variable...||`` und benenne sie mit **anzahlPersonenVorher**.
-* Setze zuunterst im Block ``beim Start`` die Variable ``anzahlPersonenVorher`` auf -1 (damit sie sich beim ersten Mal ganz sicher vom gemessenen wert unterscheidet). Die kannst Du mit ``||variables:setze anzahlPersonenVorer auf -1||`` erreichen.
-* Prüfe am Schluss der ``dauerhaft``- Schleife, ob sich die Variablen ``||variables:anzahlPersonenInWarteschlange||`` und ``||variables:anzahlPersonenVorher||``
-voneinander unterscheiden (≠ Zeichen). Wenn die Variablen unterschiedlich sind, dann soll die Variable **anzahlPersonenVorher** mit **anzahlPersonenInWarteschlange** gleichgesetzt werden.
-Nutze dazu ``||logic:wenn wahr dann||`` sowie ``||logic:0 ≠ 0||`` und 
-``||variables:setze anzahlPersonenVorher auf anzahlPersonenInWarteschlange||``
+* ``||variables:Make a Variable...||`` and name it **anzahlPersonenVorher**.
+* At the bottom of the ``on start`` block set **anzahlPersonenVorher** to -1 (so it definitely differs from the first measured value). You can do this with ``||variables:set anzahlPersonenVorher to -1||``.
+* At the end of the ``forever`` loop check whether ``||variables:anzahlPersonenInWarteschlange||`` and ``||variables:anzahlPersonenVorher||`` differ (≠). If they are different, set **anzahlPersonenVorher** to **anzahlPersonenInWarteschlange**.
+Use ``||logic:if true then||``, ``||logic:0 ≠ 0||``, and
+``||variables:set anzahlPersonenVorher to anzahlPersonenInWarteschlange||``.
 
 ```blocks
 //@hide
@@ -279,7 +276,7 @@ function messeMax () {
 //@hide
 function initialisiereLoRaVerbindung () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -291,7 +288,7 @@ function initialisiereLoRaVerbindung () {
         smartfeldAktoren.oledWriteStr(".")
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
@@ -354,15 +351,15 @@ basic.forever(function () {
 })
 ```
 
-## Gratuliere 🏆 - du hast den Teil 2 erfolgreich bearbeitet 🚀
+## Congratulations 🏆 - you have successfully completed Part 2 🚀
 
-* Falls irgendwas noch nicht richtig läuft, hier hast Du eine funktionierende Version zum testen: [Lösung Teil 2](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/warteschlange-sensorik-part-2-solution)
+* If something is not working yet, here is a working version to test: [Solution Part 2](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/warteschlange-sensorik-part-2-solution)
 
 
 ```template
 function initialisiereLoRaVerbindung () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -374,7 +371,7 @@ function initialisiereLoRaVerbindung () {
         smartfeldAktoren.oledWriteStr(".")
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }

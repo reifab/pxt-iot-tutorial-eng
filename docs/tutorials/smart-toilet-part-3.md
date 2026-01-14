@@ -4,81 +4,70 @@ sensors=github:Smartfeld/pxt-sensorikAktorikSmartfeld
 ```
 ### @explicitHints false
 
-# Smart Toilet Tutorial mit Sensor
+# Smart Toilet Tutorial with Sensor
 
-## 📗 Einführung
+## 📗 Introduction
 
-**Voraussetzungen**
+**Prerequisites**
 
-🌱 IoT Basics abgeschlossen und das Smart-Toilet-Tutorial [Teil 2 – mit Internetverbindung](https://makecode.microbit.org/#tutorial:github:fave-smartfeld/pxt-smart-toilet-tutorial/docs/tutorials/smart-toilet-part2) erfolgreich beendet.
+🌱 IoT Basics completed and the Smart Toilet tutorial [Part 2 - with internet connection](https://makecode.microbit.org/#tutorial:github:fave-smartfeld/pxt-smart-toilet-tutorial/docs/tutorials/smart-toilet-part2) completed successfully.
 
-Schwierigkeitsgrad: 🔥🔥⚪⚪
+Difficulty: 🔥🔥⚪⚪
 
-## 👁️ Voraussetzungen @showdialog
-* Schliesse den IoT-Cube so an, falls du das noch nicht erledigt hast:
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/iot-cube-anschliessen-klein.png)
-* Stelle die Schalter vorerst so ein:
-    * Battery Switch: **off**
-    * LoRa-Module: **on**
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/iot-cube-power-switches-klein.png)
-* Ein LoRa-Gateway🛜 muss in Reichweite und mit TTN (The Things Network) verbunden sein.
-  In jedem Klassensatz ist mindestens eines vorhanden, das Hunderte von IoT-Cubes bedienen kann.
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/gateway-klein.png)
+## 👁️ Prerequisites @showdialog
+* Connect the IoT Cube like this if you have not done so yet:
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/iot-cube-anschliessen-klein.png)
+* Set the switches for now:
+    * Battery switch: **off**
+    * LoRa module: **on**
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/iot-cube-power-switches-klein.png)
+* A LoRa gateway 🛜 must be in range and connected to TTN (The Things Network).
+  Each class set has at least one gateway that can serve hundreds of IoT Cubes.
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/gateway-klein.png)
 
-## Lernergebnis
+## Learning outcome
 
-Aus den vorherigen Tutorials kennst du bereits, wie man den Status der Toilette 🚽 ("Besetzt" oder "Frei") per LoRa🛜 ins Internet sendet. 
-Bisher hast du den Status durch Tastendruck ausgelöst. In einer echten Anwendung übernimmt das ein Sensor – und genau darum geht es in diesem Tutorial.
+From the previous tutorials you already know how to send the toilet 🚽 status ("Occupied" or "Free") to the internet via LoRa 🛜.
+So far you triggered the status by button presses. In a real application a sensor does this - and that is exactly what this tutorial is about.
 
-* Du baust ein Toilettenhäuschen-Modell mit einem Magnetschalter (Magnetic Switch).
+* You build a toilet cabin model with a magnetic switch.
 
-Am Ende hast du ein Programm, das …
+At the end you will have a program that...
 
-* eine LoRa-Verbindung🛜 aufbaut
-* den Status der Toilette 🚽 über den Magnetschalter erkennt
-* den Status 🚽 über LoRa🛜 ins Internet sendet
+* establishes a LoRa connection 🛜
+* detects the toilet 🚽 status using the magnetic switch
+* sends the status 🚽 to the internet via LoRa 🛜
 
-Brauchbare Funktionen aus [Teil 2](https://makecode.microbit.org/#tutorial:github:fave-smartfeld/pxt-smart-toilet-tutorial/docs/tutorials/smart-toilet-part2) sind schon integriert; das Auswerten der Tasten A und B
-wurde hingegen entfernt.
+Useful functions from [Part 2](https://makecode.microbit.org/#tutorial:github:fave-smartfeld/pxt-smart-toilet-tutorial/docs/tutorials/smart-toilet-part2) are already included; the evaluation of buttons A and B has been removed.
 
-Falls dir am bestehenden Code etwas unklar ist, lohnt es sich,
-diesen Teil noch einmal in Ruhe durchzugehen.
+If anything in the existing code is unclear, it is worth going through this part again calmly.
 
-## Hardware vorbereiten
+## Prepare the hardware
 
-* Du bekommst dieses WC-Häuschen-Modell:
+* You will receive this toilet cabin model:
   <div>
-    <img src="https://reifab.github.io/pxt-iot-tutorial/static/tutorials/wc-haus.png" width="220" alt="WC-Häuschen außen">
-    <img src="https://reifab.github.io/pxt-iot-tutorial/static/tutorials/wc-haus-innen.png" width="220" alt="WC-Häuschen innen mit Sensorik">
+    <img src="https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/wc-haus.png" width="220" alt="Toilet cabin exterior">
+    <img src="https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/wc-haus-innen.png" width="220" alt="Toilet cabin interior with sensor">
   </div>
 
-* Falls du das Modell bereits fertig montiert bekommen hast, schliesse den Magnetschalter am IoT-Cube bei **J3** an und mache
-beim nächsten Schritt weiter.
-* Falls du das Modell nicht hast, kannst du selbst etwas Ähnliches bauen:
-  * Für hohe Ansprüche lade das STL-Datei hier herunter: [🌍 STL-3D-Modell](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/3dModel/magnet-schalter-halterung.stl), die
-  Du hier anschauen kannst: [🌍 Taster-Halterung](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/3dModel/schalter-halterung.html)
-  * Den Halter kannst du mit einem 3D-Drucker ausdrucken
-  * Baue die Sensorik sowie einen Magneten🧲 in dein Modell ein (ähnlich wie im Bild rechts oben). 
-  Achte darauf, dass der Magnet im geschlossenen Zustand nicht genau mittig auf dem Magnetschalter liegt, sondern leicht nach rechts oder links versetzt zum länglichen, schwarzen Schalterteil positioniert ist.
-   
-## Magnetschalter auslesen 🧲
-Der Magnetschalter (Magnetic Switch) liefert ein digitales Signal,
-das wir einfach auswerten können:
+* If the model is already assembled, connect the magnetic switch to the IoT Cube at **J3** and continue with the next step.
+* If you do not have the model, you can build something similar yourself:
+  * For higher quality you can download the STL file here: [🌍 STL 3D model](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/3dModel/magnet-schalter-halterung.stl), which you can view here: [🌍 Button holder](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/3dModel/schalter-halterung.html)
+  * You can print the holder with a 3D printer.
+  * Build the sensor system and a magnet 🧲 into your model (similar to the image on the right). Make sure the magnet in the closed state is not exactly centered on the magnetic switch, but slightly offset to the right or left of the elongated black switch part.
 
-0 → kein Magnet in der Nähe → Tür offen
+## Read the magnetic switch 🧲
+The magnetic switch provides a digital signal that we can read easily:
 
-1 → Magnet 🧲 in der Nähe → Tür geschlossen 
+0 → no magnet nearby → door open
 
-Damit wir den Zustand der Tür laufend erkennen, lesen wir den Sensor in der
-bestehenden ``||basic:dauerhaft||``-Schleife regelmässig
-aus und übersetzen das Signal in "offen" oder "geschlossen".
+1 → magnet 🧲 nearby → door closed
 
-* ``||variables:Erstelle eine Variable...||`` und benenne sie **zustandTür**.
-* Setze die Variable **zustandTür** zuoberst in der
-``||basic:dauerhaft||``-Schleife auf den Zustand, der am Pin P2 gemessen wird. Verwende
-  dazu die Blöcke ``||variables:setze zustandTür auf 0||`` sowie
-   ``||SmartfeldSensoren:erkenne Magnetfeld||`` (unter •••Mechanische Sensoren) und ersetze die 0 durch den "erkenne Magnetfeld"-Block.
-* Stelle im "erkenne Magnetfeld"-Block P0 auf **P2** und kontrolliere, ob du den Magnetschalter an **J3** angeschlossen hast.
+To detect the door state continuously, we read the sensor in the existing ``||basic:forever||`` loop and translate the signal into "open" or "closed".
+
+* ``||variables:Make a Variable...||`` and name it **zustandTür**.
+* At the top of the ``||basic:forever||`` loop set **zustandTür** to the state measured at pin P2. Use the blocks ``||variables:set zustandTür to 0||`` and ``||SmartfeldSensoren:detect magnetic field||`` (under ••• Mechanical Sensors) and replace the 0 with the "detect magnetic field" block.
+* In the "detect magnetic field" block change P0 to **P2** and make sure the magnetic switch is connected to **J3**.
 
 ```blocks
 //@hide
@@ -127,26 +116,18 @@ basic.forever(function () {
 })
 ```
 
-## Logik zum Senden 🛜
+## Logic for sending 🛜
 
-Wenn die Tür geschlossen ist, nehmen wir an, das WC sei **Besetzt**. Andernfalls
-nehmen wir an, das WC sei **Frei**. Diese Zustände wollen wir einerseits
-anzeigen, andererseits über LoRa🛜 in die Claviscloud schicken, was 
-zum Glück beides in Form einer Funktion schon vorbereitet ist.
+If the door is closed, we assume the toilet is **occupied**. Otherwise we assume the toilet is **free**. We want to display these states and send them to Clavis Cloud via LoRa 🛜, which is already prepared as a function.
 
-* Setze unter das Auslesen des Magnetschalters einen
-  ``||logic:wenn wahr dann||``-Block.
-* Prüfe mit ``||logic:Vergleich 0 = 0||``, ob ``||variables:zustandTür||``
-  den Wert 1 hat (Tür geschlossen). Den Vergleich setzt du in den ``||logic:wenn wahr dann||``-Block
-  anstelle von **wahr** ein.
-* Wenn dies der Fall ist, rufe die Funktion ``||function:Aufruf macheBesetzt||`` auf,
-  andernfalls ``||function:Aufruf macheFrei||``. (Die Funktionen findest du im Bereich
-  **Fortgeschritten** – klappe ihn bei Bedarf zuerst auf.)
-* Klicke auf 📥 `|Download|`.
-* Prüfe, ob in der Cloud die Änderung des Zustands (frei oder besetzt) angezeigt wird:
+* Add an ``||logic:if true then||`` block below the magnetic switch reading.
+* Use ``||logic:comparison 0 = 0||`` to check whether ``||variables:zustandTür||`` is 1 (door closed). Place the comparison in the ``||logic:if true then||`` block instead of **true**.
+* If that is the case, call ``||function:call macheBesetzt||``, otherwise ``||function:call macheFrei||``. (The functions are in **Advanced** - open it if needed.)
+* Click 📥 `|Download|`.
+* Check if the status change (free or occupied) is shown in the cloud:
   [iot.claviscloud.ch](https://iot.claviscloud.ch/dashboards/)
-* Behebe gegebenenfalls aufgetretene Fehler. Klicke auf das 💡-Symbol bei Schwierigkeiten.
-* Fällt dir sonst noch etwas auf? Gibt es Dinge, die du optimieren könntest?
+* Fix any errors if needed. Click the 💡 icon if you get stuck.
+* Do you notice anything else? Can you optimize anything?
 
 
 ```blocks
@@ -201,25 +182,20 @@ basic.forever(function () {
 })
 ```
 
-## Optimieren 🪫
+## Optimize 🪫
 
-Im Moment wird alle 5 Sekunden gesendet, auch ohne Zustandswechsel. 
-Das kostet unnötig Energie. Sinnvoller ist es, nur bei einer Änderung 
-des Türzustands zu senden.
+Right now data is sent every 5 seconds, even if the status has not changed.
+That costs unnecessary energy. It makes more sense to send only when the door status changes.
 
-* ``||variables:Erstelle eine Variable...||`` und benenne sie **zustandTürDavor**.
-* Setze ganz am Ende im Block ``beim Start`` die Variable
-  ``||variables:zustandTürDavor||`` auf -1, damit sie sich beim ersten Durchlauf garantiert
-  vom gemessenen Wert unterscheidet: ``||variables:setze zustandTürDavor auf -1||``
-* Prüfe in der ``||basic:dauerhaft||``-Schleife, vor **wenn späterSenden dann**, ob sich die Variablen ``||variables:zustandTür||`` und ``||variables:zustandTürDavor||``
-  unterscheiden (≠-Vergleich). Wenn ja, aktualisiere **zustandTürDavor**
-  und führe nur dann die bestehende Logik aus. Gehe z.B. so vor:
-  * Nimm den Block ``||logic:wenn wahr dann||`` sowie ``||logic:0 ≠ 0||`` (Für den Vergleich der beiden Variablen)
-  * Ersetze die Nullen mit den beiden Variablen ``||variables:zustandTür||`` und ``||variables:zustandTürDavor||``
-  * Wenn die Bedinung erfüllt ist ``||variables:setze zustandTürDavor auf zustandTür||``
-  * Verschiebe nun deine bisherige Abfrage (Tür = 1) in diesen neuen Wenn-Block. 
-  Selektiere dazu den zu verschiebenden Wenn-Dann-Block, drücke ctrl+X zum ausschneiden und ctrl+V zum einsetzen. 
-  Dadurch wird das Anzeigen und Senden nur noch ausgeführt, wenn sich der Türzustand ändert.
+* ``||variables:Make a Variable...||`` and name it **zustandTürDavor**.
+* At the very end of the ``on start`` block set ``||variables:zustandTürDavor||`` to -1 so it definitely differs from the first measured value: ``||variables:set zustandTürDavor to -1||``.
+* In the ``||basic:forever||`` loop, before **if spaeterSenden then**, check whether ``||variables:zustandTür||`` and ``||variables:zustandTürDavor||`` are different (≠ comparison). If yes, update **zustandTürDavor** and only then run the existing logic. For example:
+  * Use ``||logic:if true then||`` and ``||logic:0 ≠ 0||`` (to compare the two variables).
+  * Replace the zeros with the variables ``||variables:zustandTür||`` and ``||variables:zustandTürDavor||``.
+  * If the condition is met, ``||variables:set zustandTürDavor to zustandTür||``.
+  * Now move your previous check (door = 1) into this new if block.
+  Select the if block to move, press ctrl+X to cut and ctrl+V to paste.
+  This makes the display and sending happen only when the door status changes.
 
 ```blocks
 //@hide
@@ -303,13 +279,12 @@ basic.forever(function () {
 })
 ```
 
-## Gratuliere 🏆 – du hast das Tutorial erfolgreich bearbeitet 🚀
+## Congratulations 🏆 - you have successfully completed the tutorial 🚀
 
-* Falls noch nicht gemacht, verbinde deine smarte Toilette mit dem Toiletten-Widget 
-der [Claviscloud](https://iot.claviscloud.ch/).
-* Teste, ob die Daten auf dem LED-Display sowie in der Cloud☁️ korrekt angezeigt werden.
-* Falls etwas noch nicht richtig läuft, findest du hier eine funktionierende Version zum Testen: 
-[Lösung Teil 3](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/smart-toilet-part-3-solution)
+* If you have not done it yet, connect your smart toilet to the toilet widget in [Clavis Cloud](https://iot.claviscloud.ch/).
+* Test whether the data is shown correctly on the LED display and in the cloud ☁️.
+* If something is not working yet, you can find a working version to test here:
+[Solution Part 3](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/smart-toilet-part-3-solution)
 
 ```template
 function macheFrei () {
