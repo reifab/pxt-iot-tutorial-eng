@@ -5,11 +5,11 @@ neopixel=github:microsoft/pxt-neopixel#v0.7.6
 ```
 ### @explicitHints false
 
-# Warteschlangen-Sensorik Teil 2
-## Lösung
+# Queue Sensor System Part 2
+## Solution
 
-* Unten findest du die komplette Lösung.
-* Drücke 📥 `|Download|` und teste das Programm.
+* Below you will find the complete solution.
+* Press 📥 `|Download|` and test the program.
 
 ```template
 
@@ -29,7 +29,7 @@ function messeMax () {
 }
 function initialisiereLoRaVerbindung () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -41,7 +41,7 @@ function initialisiereLoRaVerbindung () {
         smartfeldAktoren.oledWriteStr(".")
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }

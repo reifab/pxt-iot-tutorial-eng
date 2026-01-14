@@ -5,11 +5,11 @@ neopixel=github:microsoft/pxt-neopixel#v0.7.6
 ```
 ### @explicitHints false
 
-# Warteschlangen-Sensorik Teil 1
-## Lösung
+# Queue Sensor System Part 1
+## Solution
 
-* Unten findest du die komplette Lösung.
-* Drücke 📥 `|Download|` und teste das Programm.
+* Below you will find the complete solution.
+* Press 📥 `|Download|` and test the program.
 
 ```template
 function schreibeInfosAufDisplay (position: number, wert: number, _symbol: string) {

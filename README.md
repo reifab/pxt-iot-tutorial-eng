@@ -1,29 +1,28 @@
-# Tutorials für den IoT Cube
+# Tutorials for the IoT Cube
 
-## Übersicht
+## Overview
 
-In diesem Repository sind zwei Makecode-Tutorials mit mehreren Teilen enthalten:
+This repository contains two multi-part MakeCode tutorials:
 
-### Seifenspender
+### Soap Dispenser
 
-In diesem Tutorial wird Schritt für Schritt ein Programm aufgebaut, das den Seifenstand simuliert und die Daten über 🛜 LoRa ins Internet sendet.
+In this tutorial you build a program step by step that simulates the soap level and sends the data to the internet via 🛜 LoRa.
 
-* [Einstiegspunkt Seifenspender](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-overview)
-* [Teil 1 - noch ohne Internetverbindung](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-1)
-* [Teil 2 - mit Internetverbindung](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-2)
-* [Teil 3 - mit Internetverbindung und Sensorik](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-3)
+* [Soap dispenser entry point](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-overview)
+* [Part 1 - still without internet connection](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-1)
+* [Part 2 - with internet connection](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-2)
+* [Part 3 - with internet connection and sensors](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-3)
 
-### Warteschlange
+### Queue
 
-In diesem Tutorial wird eine Warteschlange simuliert für eine smarte Toilette, um die wartenden Personen automatisiert zu zählen.
+In this tutorial you simulate a queue for a smart toilet in order to automatically count waiting people.
 
-* [Einstiegspunkt Warteschlange](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/warteschlange-overview)
-* [Teil 1 - noch ohne Internetverbindung](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/warteschlange-sensorik-part-1)
-* [Teil 2 - mit Internetverbindung](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/warteschlange-sensorik-part-2)
-
+* [Queue entry point](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/warteschlange-overview)
+* [Part 1 - still without internet connection](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/warteschlange-sensorik-part-1)
+* [Part 2 - with internet connection](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/warteschlange-sensorik-part-2)
 
 ### Smart Toilet
 
-In diesem Tutorial wird ein WC- Häuschen simuliert, dessen Zustand (Frei oder Besetzt) über 🛜 LoRa ins Internet sendet.
+In this tutorial a toilet cabin is simulated. Its status (free or occupied) is sent to the internet via 🛜 LoRa.
 
-* [Teil 3 - mit Internetverbindung](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/smart-toilet-part-3)
+* [Part 3 - with internet connection](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/smart-toilet-part-3)

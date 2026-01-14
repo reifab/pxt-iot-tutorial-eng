@@ -4,48 +4,43 @@ sensors=github:Smartfeld/pxt-sensorikAktorikSmartfeld
 ```
 ### @explicitHints false
 
-# IoT Tutorial Teil 3
+# IoT Tutorial Part 3
 
+## 📗 Introduction, Part 3
 
-## 📗 Einführung, Teil 3
+Prerequisites: 🌱 IoT Basics completed and IoT Tutorial [Part 2](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-2) completed.
+Difficulty: 🔥🔥🔥⚪
 
-Voraussetzungen: 🌱 IoT Basics abgeschlossen und IoT Tutorial [Teil 2](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-2) abgeschlossen.
-Schwierigkeitsgrad: 🔥🔥🔥⚪
+From Tutorial Part 2 you already have a program that simulates the soap level with buttons A and B and sends it to the internet via LoRa 🛜. To get closer to the real application, you replace buttons A and B with an ultrasonic sensor that measures the soap level.
 
-Aus dem Tutorial Teil 2 hast du bereits ein Programm, das den Seifenstand mit Knopf A und B 
-simuliert und über LoRa🛜 ins Internet sendet. Um der realen Anwendung näher zu kommen, 
-ersetzt Du die Knöpfe A und B durch einen Ultraschallsensor, der den Seifenstand misst.
+At the end you will have a program that...
 
-Am Schluss hast du ein Programm, welches...
+* Measures the soap level with an ultrasonic sensor 🦇.
+* Establishes a LoRa connection 🛜.
+* Sends the soap level 🧼 over LoRa 🛜.
+* Shows a loading bar animation ⏳ for waiting times.
 
-* Den Seifenstand mit einem Ultraschallsensor🦇 misst.
-* Eine LoRa-Verbindung🛜 aufbaut. 
-* Den Seifenstand🧼 über LoRa🛜 sendet. 
-* Eine Ladebalken-Animation⏳ für Wartezeiten darstellt.
+## 👁️ Prerequisites @showdialog
 
-## 👁️ Voraussetzungen @showdialog
+Compared to Tutorial Part 2, you need the following:
+* Connect the ultrasonic sensor 🦇 to J1.
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/14_Tutorial_Seifenspender_Ultraschallsensor.png)
 
-Du brauchst gegenüber Tutorial Teil 2 folgendes:
-* Schliesse den Ultraschallsensor🦇 an J1 an.
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/14_Tutorial_Seifenspender_Ultraschallsensor.png)
+## Check the previous functionality
 
-## Bisherige Funktion überprüfen
+Check that the data still arrives in Clavis Cloud ☁️.
+* Upload the existing program to the IoT Cube.
+* Go to [🌍iot.claviscloud.ch](https://iot.claviscloud.ch/home).
+* Navigate to your dashboard.
 
-Prüfe, ob die Daten immer noch auf der Clavis Cloud ☁️ ankommen.
-* Lade das bestehende Programm auf den IoT Cube
-* Rufe die Website [🌍iot.claviscloud.ch](https://iot.claviscloud.ch/home) auf.
-* Navigiere zu Deinem Dashboard. 
+Is the 🧼 soap level (100%) shown on the dashboard? Does the soap level drop when you press button A?
 
-Wird der🧼 Seifenstand (100 %) auf dem Dashboard angezeigt? Reduziert
-sich der Seifenstand beim Drücken von Knopf A?
+## Remove code that is no longer needed
 
-## Nicht mehr benötigten Code entfernen
-
-Die Knöpfe A und B sollen durch eine reale Messung mittels Ultraschallsensor 
-ersetzt werden. Welcher Code wird neu nicht mehr benötigt? 
-* Klicke auf die Glühbirne 💡, dann siehst du den Code, wie er ohne die Knöpfe aussieht.
-Das Senden des Seifenstands und die Wartefunktion wurden belassen. 
-* Passe den Code entsprechend dem Beispiel (Glühbirne 💡) an.
+Buttons A and B will be replaced by a real measurement using the ultrasonic sensor. Which code is no longer needed?
+* Click the 💡 bulb to see what the code looks like without the buttons.
+The sending of the soap level and the waiting function are kept.
+* Adjust your code according to the example (💡 bulb).
 
 ```blocks
 // @highlight
@@ -53,30 +48,29 @@ basic.forever(function () {
     led.plotBarGraph(seifenstandInProzent,100)
     IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
     IoTCube.SendBufferSimple()
-    warte5SekundenUndZeigeFortschritt()
+    wait5SecondsAndShowProgress()
     basic.pause(150)
     basic.clearScreen()
 })
 
 // @hide
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(50)
     }
     smartfeldAktoren.oledClear()
 }
 ```
 
-## Senden vorerst verhindern
+## Temporarily prevent sending
 
-Wir wollen vorerst noch nichts an die ☁️ Cloud senden.
-* Modifiziere **dauerhaft** so, wie unter der💡angezeigt. 
-Verwende dazu den Block ``||Logic:wenn wahr dann||``. 
-Dieser verhindert das Senden sobald du wahr auf **falsch** stellst.
-* **beim Start** verwendest Du ebenfalls den Block ``||Logic:wenn wahr dann||``,
-um das Senden der Daten zu verhindern (Block auf **falsch** stellen).
+For now we do not want to send anything to the ☁️ cloud.
+* Modify **forever** as shown under 💡.
+Use the block ``||logic:if true then||``.
+This prevents sending as soon as you set the value to **false**.
+* In **on start** also use the block ``||logic:if true then||`` to prevent sending data (set the block to **false**).
 
 ```blocks
 let seifenstandInProzent = 100
@@ -87,10 +81,10 @@ seifenstandInProzent,
 smartfeldAktoren.oledInit(128, 64)
 // @highlight
 if (false) {
-    initialisiereLoRaVerbindung()
+    initializeLoRaConnection()
     IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
     IoTCube.SendBufferSimple()
-    warte5SekundenUndZeigeFortschritt()
+    wait5SecondsAndShowProgress()
 }
 
 basic.forever(function () {
@@ -99,26 +93,26 @@ basic.forever(function () {
     if (false) {
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
     }
     basic.pause(150)
     basic.clearScreen()
 })
 
 // @hide
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(50)
     }
     smartfeldAktoren.oledClear()
 }
 
 // @hide
-function initialisiereLoRaVerbindung () {
+function initializeLoRaConnection () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -130,20 +124,19 @@ function initialisiereLoRaVerbindung () {
         basic.pause(1000)
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
 ```
 
-## Ultraschallsensor verwenden
+## Use the ultrasonic sensor
 
-* Schliesse den Ultraschallsensor🦇  an J1 an. 
-* Um die gemessene Distanz 📏 zwischen Seife und Sensor zu speichern, benötigen wir eine Variable.
-``||variables:Erstelle eine Variable...||`` und benenne sie mit **distanzSensorZuSeife** .
-* Ziehe den Block ``||variables:setze distanzSensorZuSeife auf 0||`` zuoberst in die Dauerhaft-Schleife .
-* Um der Variable den Messwert zuzuweisen, füge den Block ``||SmartfeldSensoren:Distanz in cm||``
-anstelle der 0 ein. Belasse den Pin auf P0.
+* Connect the ultrasonic sensor 🦇 to J1.
+* To store the measured distance 📏 between soap and sensor, we need a variable.
+``||variables:Make a Variable...||`` and name it **distanzSensorZuSeife**.
+* Drag the block ``||variables:set distanzSensorZuSeife to 0||`` to the top of the forever loop.
+* To assign the measured value to the variable, insert the block ``||SmartfeldSensoren:distance in cm||`` instead of the 0. Leave the pin on P0.
 
 ```blocks
 basic.forever(function () {
@@ -156,37 +149,34 @@ basic.forever(function () {
     if (false) {
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
     }
     basic.pause(150)
     basic.clearScreen()
 })
 
 // @hide
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(50)
     }
     smartfeldAktoren.oledClear()
 }
 ```
 
-## Messwert anzeigen
+## Show the measured value
 
-Der Sensor liefert die Distanz in cm. Um die Funktion des Sensors zu überprüfen,
-zeigen wir den Sensorwert auf dem OLED- Display 🖥️ an. 
+The sensor gives the distance in cm. To check that the sensor works, we show the sensor value on the OLED display 🖥️.
 
-* Setze den Block 🖥️ ``||SmartfeldAktoren:Lösche Displayinhalt||``
-zuoberst in der Dauerhaft-Schleife ein.
-Damit löschst du bestehende Inhalte auf dem OLED- Display 🖥️.
-* Unter der Variable setzt du den Block ``||SmartfeldAktoren:schreibe Nummer||``
-ein. 
-* Ersetze die 0 mit der Variable ``||variables:distanzSensorZuSeife||``
-* Runde den Wert auf ganze Zahlen mit dem Block ``||math:runden||``
-* Schreibe nach dem Messwert die Masseinheit **cm** auf das OLED- Display 🖥️ mit ``||SmartfeldAktoren:schreibe String||``
-* Drücke 📥`|Download|` und kontrolliere die Anzeige am OLED Display 🖥️. Wird die Distanz zwischen Sensor und Hindernis angezeigt?
+* Place the block 🖥️ ``||SmartfeldAktoren:clear display||`` at the top of the forever loop.
+This clears existing content on the OLED display 🖥️.
+* Under the variable, add the block ``||SmartfeldAktoren:write number||``.
+* Replace the 0 with the variable ``||variables:distanzSensorZuSeife||``.
+* Round the value to whole numbers using ``||math:round||``.
+* Write the unit **cm** after the value using ``||SmartfeldAktoren:write string||``.
+* Press 📥`|Download|` and check the OLED display 🖥️. Is the distance between the sensor and obstacle shown?
 
 ```blocks
 basic.forever(function () {
@@ -205,49 +195,47 @@ basic.forever(function () {
     if (false) {
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
     }
     basic.pause(150)
     basic.clearScreen()
 })
 
 // @hide
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(50)
     }
     smartfeldAktoren.oledClear()
 }
 ```
 
-## Modell für Seifenspender bauen
+## Build a soap dispenser model
 
-Um die Anwendung des Seifenspenders zu testen, bauen wir ein Karton-Modell, 
-welches als Halter für den Ultraschallsensor🦇 dient. 
-Über einen Schieber kann die Distanz eingestellt werden, welche den Seifenstand🧼 simuliert.
+To test the application, we build a cardboard model that acts as a holder for the ultrasonic sensor 🦇.
+A slider lets you change the distance, which simulates the soap level 🧼.
 
-* Lade dir das Modell herunter und drucke es auf A3 aus. 
-Empfehlenswert ist es, das Modell auf einen Karton oder dickeres Papier zu kleben. 
-Dadurch erhält das Modell mehr Stabilität. Download Vorlage:
-[🌍Kartonmodell-Abwicklung](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/Seifenspender_Kartonvorlage_Abwicklung_zum_Ausdrucken_A3.pdf)
+* Download the model and print it on A3.
+It is recommended to glue the model to cardboard or thicker paper. This makes it more stable. Template download:
+[🌍Cardboard template](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/Seifenspender_Kartonvorlage_Abwicklung_zum_Ausdrucken_A3.pdf)
 
-* Unter folgendem Links siehst du, wie das Modell aussieht:
- [🌍Kartonmodell](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/3dModel/seifenspender3dModellViewer.html)
+* The following link shows how the model looks:
+ [🌍Cardboard model](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/3dModel/seifenspender3dModellViewer.html)
 
-## Seifenstand🧼 berechnen
+## Calculate the soap level 🧼
 
-* Aus der Messgrösse distanzSensorZuSeife kannst du den Seifenstand🧼 in % berechnen. Siehst Du die Zusammenhänge, wenn Du das Bild weiter unten studierst?
-* Berechne den Seifenstand in Prozent. Nutze ``||math:Mathematik||`` sowie ``||variables:setze seifenstandInProzent auf ... ||``.
-Es steht Dir frei, eine weitere Variable für Zwischenresultate zu erstellen.
-* Runde den Seifenstand in Prozent auf ganze Zahlen mit ``||math:runden||``
-* Seifenstände kleiner 0% sollen auf 0% begrenzt werden. Verwende dazu ``||Logic:wenn wahr dann||``.
-* Gib den Seifenstand🧼 in % auf dem OLED- Display 🖥️ aus (Anstelle der Distanz)
-* Drücke 📥`|Download|` und kontrolliere die Anzeige am OLED Display 🖥️. Wird der Seifenstand in % angezeigt? Bewege den Schieber und teste das Programm!
-* Lass dir mit der Glühbirne 💡 eine mögliche Lösung anzeigen, falls Du kein Erfolg hast. Wenn der Abstand 0 cm ist, bedeutet das 100 %, bei 25 cm bedeutet es 0 %.
+* From the measurement distanzSensorZuSeife you can calculate the soap level 🧼 in %. Do you see the relationships when you study the image below?
+* Calculate the soap level in percent. Use ``||math:Math||`` and ``||variables:set seifenstandInProzent to ...||``.
+You may create another variable for intermediate results.
+* Round the soap level to whole numbers with ``||math:round||``.
+* Soap levels below 0% should be limited to 0%. Use ``||logic:if true then||``.
+* Show the soap level 🧼 in % on the OLED display 🖥️ (instead of the distance).
+* Press 📥`|Download|` and check the OLED display 🖥️. Is the soap level shown in %? Move the slider and test the program.
+* Use the 💡 bulb to see a possible solution if you do not succeed. If the distance is 0 cm, that means 100%; at 25 cm it means 0%.
 
-<img src="https://reifab.github.io/pxt-iot-tutorial/static/tutorials/Seifenspender_Distanzen.png" width="800">
+<img src="https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/Seifenspender_Distanzen.png" width="800">
 
 ```blocks
 basic.forever(function () {
@@ -276,41 +264,34 @@ basic.forever(function () {
     if (false) {
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
     }
     basic.pause(150)
     basic.clearScreen()
 })
 
 // @hide
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(50)
     }
     smartfeldAktoren.oledClear()
 }
 ```
 
-## Senden in die Cloud☁️ bei Änderung des Seifenstandes
+## Send to the cloud ☁️ when the soap level changes
 
-Da wir nicht immer, sondern nur dann, wenn sich der Seifenstand ändert, 
-diesen an die Cloud senden möchten, müssen wir unser Programm noch etwas erweitern, 
-d.h. eine Variable nutzen, um Änderungen zu erkennen. 
+Because we want to send the soap level only when it changes, we need to extend the program with a variable that detects changes.
 
-* Um Änderungen am Seifenstand zu detektieren, müssen wir jeweils den alten Wert speichern. Dazu benötigen wir eine neue Variable.
-``||variables:Erstelle eine Variable...||`` und benenne sie mit **seifenstandAlt** .
-* beim Start ``||variables:setze seifenstandAlt auf -1||``, bzw. auf einen Wert, der sich beim ersten Mal von der Realität unterscheidet.
-* In der bestehenden ``||basic:dauerhaft||``- Schleife befindet sich eine Logik ``||logic:wenn falsch dann||``,
-um das Senden zu verhindern.
-Diese baust du für deine Zwecke um: Prüfe mit ``||logic:Vergleich 0 ≠ 0||``, 
-ob sich die Variablen ``||variables:seifenstandAlt||`` und 
-``||variables:seifenstandInProzent||`` unterscheiden. 
-Falls ja, schicke den aktuellen Wert in die Cloud (ist bereits vorhanden) und setze 
-``||variables:seifenstandAlt||`` auf ``||variables:seifenstandInProzent||``.
-* Setze beim Start den Wahrheitswert der Bedingung wieder auf **Wahr**, 
-damit der Verbindungsaufbau wieder ausgeführt wird.
+* To detect changes in the soap level, we need to store the old value. Create a new variable with
+``||variables:Make a Variable...||`` and name it **seifenstandAlt**.
+* In ``||basic:on start||`` set ``||variables:set seifenstandAlt to -1||`` (or any value that is different from reality at the first run).
+* In the existing ``||basic:forever||`` loop there is a ``||logic:if false then||`` block that prevents sending.
+Modify it for your purpose: use ``||logic:comparison 0 ≠ 0||`` to check if ``||variables:seifenstandAlt||`` and ``||variables:seifenstandInProzent||`` are different.
+If yes, send the current value to the cloud (already present) and set ``||variables:set seifenstandAlt to seifenstandInProzent||``.
+* In **on start**, set the condition back to **true** so the connection setup runs again.
 
 ```blocks
 let zwischenresultat = 0
@@ -326,10 +307,10 @@ seifenstandInProzent,
 smartfeldAktoren.oledInit(128, 64)
 
 if (true) {
-    initialisiereLoRaVerbindung()
+    initializeLoRaConnection()
     IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
     IoTCube.SendBufferSimple()
-    warte5SekundenUndZeigeFortschritt()
+    wait5SecondsAndShowProgress()
 }
 basic.forever(function () {
     smartfeldAktoren.oledClear()
@@ -351,7 +332,7 @@ basic.forever(function () {
     if (seifenstandAlt != seifenstandInProzent) {
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
         // @highlight
         seifenstandAlt = seifenstandInProzent
     }
@@ -360,19 +341,19 @@ basic.forever(function () {
 })
 
 // @hide
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(50)
     }
     smartfeldAktoren.oledClear()
 }
 
 // @hide
-function initialisiereLoRaVerbindung () {
+function initializeLoRaConnection () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -384,22 +365,22 @@ function initialisiereLoRaVerbindung () {
         basic.pause(1000)
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
 ```
-## Testen, Fehler beheben, optimieren
+## Test, fix, optimize
 
-* Drücke 📥`|Download|`
-* Prüfe, ob in der Cloud Änderungen des Seifenstands 🧼 angezeigt werden: [iot.claviscloud.ch](https://iot.claviscloud.ch/dashboards/)
-* Behebe gegebenenfalls aufgetretene Fehler. Klicke auf das 💡- Symbol, um den gesamten Code des "Seifenspenders" anzuzeigen.
-* Energie sparen: Displays (das LED- sowie das OLED- Display) brauchen relativ viel Strom. Kannst Du den Code optimieren, sodass die beiden Displays nur bei Seifenstand- Änderungen aktiv sind?
+* Press 📥`|Download|`.
+* Check if changes of the soap level 🧼 are shown in the cloud: [iot.claviscloud.ch](https://iot.claviscloud.ch/dashboards/)
+* Fix any errors. Click the 💡 icon to show the full "soap dispenser" code.
+* Save energy: Displays (both LED and OLED) use a lot of power. Can you optimize the code so the displays are only active when the soap level changes?
 
 ```blocks
-function initialisiereLoRaVerbindung () {
+function initializeLoRaConnection () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -411,14 +392,14 @@ function initialisiereLoRaVerbindung () {
         basic.pause(1000)
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(50)
     }
     smartfeldAktoren.oledClear()
@@ -433,10 +414,10 @@ seifenstandInProzent,
 )
 smartfeldAktoren.oledInit(128, 64)
 if (true) {
-    initialisiereLoRaVerbindung()
+    initializeLoRaConnection()
     IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
     IoTCube.SendBufferSimple()
-    warte5SekundenUndZeigeFortschritt()
+    wait5SecondsAndShowProgress()
 }
 basic.forever(function () {
     smartfeldAktoren.oledClear()
@@ -457,7 +438,7 @@ basic.forever(function () {
     if (seifenstandAlt != seifenstandInProzent) {
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
         seifenstandAlt = seifenstandInProzent
     }
     basic.pause(150)
@@ -465,14 +446,14 @@ basic.forever(function () {
 })
 ```
 
-## Gratuliere 🏆 - du hast das Tutorial für den Seifenspender erfolgreich bearbeitet 🚀
+## Congratulations 🏆 - you have successfully completed the soap dispenser tutorial 🚀
 
-* Falls irgendwas noch nicht richtig läuft, hier hast Du eine funktionierende Version zum testen: [Lösung Teil 3](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-3-solution)
+* If something is not working yet, here is a working version to test: [Solution Part 3](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-3-solution)
 
 ```template
-function initialisiereLoRaVerbindung () {
+function initializeLoRaConnection () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -484,14 +465,14 @@ function initialisiereLoRaVerbindung () {
         basic.pause(1000)
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(50)
     }
     smartfeldAktoren.oledClear()
@@ -502,10 +483,10 @@ seifenstandInProzent,
 100
 )
 smartfeldAktoren.oledInit(128, 64)
-initialisiereLoRaVerbindung()
+initializeLoRaConnection()
 IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
 IoTCube.SendBufferSimple()
-warte5SekundenUndZeigeFortschritt()
+wait5SecondsAndShowProgress()
 basic.forever(function () {
     if (input.buttonIsPressed(Button.A)) {
         seifenstandInProzent += -20
@@ -518,7 +499,7 @@ basic.forever(function () {
         )
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
     }
     if (input.buttonIsPressed(Button.B)) {
         seifenstandInProzent = 100
@@ -528,7 +509,7 @@ basic.forever(function () {
         )
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
     }
     basic.pause(150)
     basic.clearScreen()

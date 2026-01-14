@@ -1,32 +1,32 @@
-# Tutorial: Seifenspender für den IoT Cube
+# Tutorial: Soap Dispenser for the IoT Cube
 
-## Wichtige Hinweise zu Beginn:
-* Fenster vergrössern: Zieh dieses Browser-Fenster oder das MakeCode-Fenster grösser, damit du alles gut sehen kannst.
-* Scrollen nicht vergessen: Scrolle immer ganz nach unten, um wirklich alle Schritte zu sehen. Sonst verpasst du Teile des Tutorials!
-* Auf Links klicken: Wenn du eine blau unterstrichene Stelle (Link) siehst, musst du darauf klicken. Dort geht das Tutorial weiter oder es öffnet sich ein zusätzlicher Inhalt.
+## Important notes before you start
+* Enlarge the window: Make this browser window or the MakeCode window larger so you can see everything well.
+* Do not forget to scroll: Always scroll all the way down to see every step. Otherwise you will miss parts of the tutorial.
+* Click on links: If you see blue underlined text (a link), click it. The tutorial continues there or additional content opens.
 
-## Einführung
-Voraussetzungen: 🌱 IoT Basics abgeschlossen
-Schwierigkeitsgrad: 🔥🔥⚪⚪
+## Introduction
+Prerequisites: 🌱 IoT Basics completed
+Difficulty: 🔥🔥⚪⚪
 
-In diesem Tutorial baust du Schritt für Schritt ein Programm auf, das den Seifenstand simuliert und die Daten über 🛜 LoRa ins Internet sendet.
+In this tutorial you build a program step by step that simulates the soap level and sends the data to the internet via 🛜 LoRa.
 
-Das Tutorial ist in drei Teile aufgeteilt:
+The tutorial is split into three parts:
 
-* [Teil 1 - noch ohne Internetverbindung](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-1)  
-* [Teil 2 - mit Internetverbindung](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-2)
-* [Teil 3 - mit Internetverbindung und Sensorik](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-3)
+* [Part 1 - still without internet connection](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-1)  
+* [Part 2 - with internet connection](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-2)
+* [Part 3 - with internet connection and sensors](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-3)
 
-Tipp: Scrolle in jedem Tutorial-Schritt ganz nach unten und klicke erst dann auf den Weiter-Button, damit du nichts übersiehst!
+Tip: In each step, scroll all the way down and only then click the next button so you do not miss anything.
 
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/iot-cube-anschliessen-klein.png)
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/iot-cube-anschliessen-klein.png)
 
-## Start Teil 1
+## Start Part 1
 
-👉 **Klicke auf den Button unten, um mit Teil 1 zu beginnen:**
+👉 **Click the button below to start Part 1:**
 
-[▶️ Starte Teil 1 – noch ohne Internetverbindung](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-1)
+[▶️ Start Part 1 - still without internet connection](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-1)
 
 ---
 
-⚠️ **Wichtig:** Klicke *nicht* auf "Fertig", sondern nutze den Link oben!
+⚠️ **Important:** Do *not* click "Done". Use the link above.

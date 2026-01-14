@@ -4,47 +4,45 @@ sensors=github:Smartfeld/pxt-sensorikAktorikSmartfeld
 ```
 ### @explicitHints false
 
-# IoT Tutorial Teil 2
+# IoT Tutorial Part 2
 
-## 📗 Einführung, Teil 2
+## 📗 Introduction, Part 2
 
-Voraussetzungen: 🌱 IoT Basics abgeschlossen und IoT Tutorial [Teil 1 - noch ohne Internetverbindung](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-1) abgeschlossen.
-Schwierigkeitsgrad: 🔥🔥⚪⚪
+Prerequisites: 🌱 IoT Basics completed and IoT Tutorial [Part 1 - still without internet connection](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-1) completed.
+Difficulty: 🔥🔥⚪⚪
 
-Aus dem Tutorial Teil 1 hast du bereits ein Programm, das den Seifenstand simuliert. 
-Nun wollen wir über LoRa🛜 den Seifenstand ins Internet senden. Am Ende hast du ein
-funktionsfähiges Programm, das:
+From Tutorial Part 1 you already have a program that simulates the soap level.
+Now we want to send the soap level to the internet via LoRa 🛜. At the end you will have a working program that:
 
-* Eine LoRa-Verbindung🛜 aufbaut. 
-* Den Seifenstand🧼  über LoRa🛜 sendet. 
-* Eine Ladebalken-Animation⏳ für Wartezeiten darstellt.
+* Establishes a LoRa connection 🛜.
+* Sends the soap level 🧼 over LoRa 🛜.
+* Shows a loading bar animation ⏳ during waiting times.
 
-## 👁️ Voraussetzungen @showdialog
-* Du benötigst einen IoT Cube dessen OLED Display 🖥️ an J5 angeschlossen ist.
-* Schliesse den Cube so an, falls noch nicht gemacht:
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/iot-cube-anschliessen-klein.png)
-* Stelle die Schalter vorerst so ein:
-    * Battery Switch: **off**
-    * LoRa Module: **on**
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/iot-cube-power-switches-klein.png)
+## 👁️ Prerequisites @showdialog
+* You need an IoT Cube with the OLED display 🖥️ connected to J5.
+* Connect the cube like this if you have not done so yet:
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/iot-cube-anschliessen-klein.png)
+* Set the switches for now:
+    * Battery switch: **off**
+    * LoRa module: **on**
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/iot-cube-power-switches-klein.png)
 
-* Ein LoRa- Gateway🛜 muss in Reichweite sein, welches mit TTN (The Things Network) verbunden ist.
-Dies ist im Klassensatz einmal vorhanden und kann hunderte von IoT- Cubes bedienen.
-![Bild](https://reifab.github.io/pxt-iot-tutorial/static/tutorials/gateway-klein.png)
+* A LoRa gateway 🛜 must be in range and connected to TTN (The Things Network).
+In class there is one gateway that can serve hundreds of IoT Cubes.
+![Image](https://reifab.github.io/pxt-iot-tutorial-eng/static/tutorials/gateway-klein.png)
 
-## 🖥️ Statusmeldung anzeigen auf OLED  
-Auf dem kleinen Display auf dem IoT Cube wollen wir den Text "Verbinde" anzeigen. 
+## 🖥️ Show a status message on the OLED
+On the small display of the IoT Cube we want to show the text "Connecting".
 
-* Klappe den Bereich ``||SmartfeldAktoren:•••Display||`` auf und hol dir den Block 🖥️ ``||SmartfeldAktoren:init OLED Breite 128 Höhe 64||`` .
-und ergänze ihn unten im Block ``||basic:beim Start||``. 
-* Darunter setzt du den Block 🖥️ ``||SmartfeldAktoren:Lösche Displayinhalt||`` .
-ein.
-Damit löschst du bestehende Inhalte auf dem Display.
-* Jetzt verwendest du den Block ``||SmartfeldAktoren:schreibe String||``.
-Damit schreibst du den Text "Verbinde" auf das Display.
-* Drücke 📥`|Download|` und kontrolliere die Anzeige am OLED Display 🖥️.
+* Open the area ``||SmartfeldAktoren:•••Display||`` and get the block 🖥️ ``||SmartfeldAktoren:init OLED width 128 height 64||``.
+Add it at the bottom of the ``||basic:on start||`` block.
+* Under it, add the block 🖥️ ``||SmartfeldAktoren:clear display||``.
+This clears existing content on the display.
+* Now use the block ``||SmartfeldAktoren:write string||``.
+This writes the text "Connecting" on the display.
+* Press 📥`|Download|` and check the OLED display 🖥️.
 
-Wird dir "Verbinde" angezeigt?
+Do you see "Connecting"?
 
 ```blocks
 let seifenstandInProzent = 100
@@ -57,25 +55,20 @@ smartfeldAktoren.oledInit(128, 64)
 // @highlight
 smartfeldAktoren.oledClear()
 // @highlight
-smartfeldAktoren.oledWriteStr("Verbinde")
+smartfeldAktoren.oledWriteStr("Connecting")
 ```
 
-## 🛜 Verbindung mit Internet aufbauen
-Nun bauen wir eine Verbindung zum Internet auf.
-Auf dem OLED- Display🖥️ wollen wir den Verbindungsaufbau mit **...** anzeigen.
-* Ziehe den Block 🛜``||IoTCube:LoRa Netzwerk-Verbindung||`` zuunterst in 
-``||basic:beim Start||`` hinein.
-* Ziehe darunter den Block ``||loops:während falsch mache||`` hinein. Weil
-das Verbinden je nach Umständen 5 bis 30 Sekunden dauert, wollen wir in dieser
-Schleife verbleiben, solange die Verbindung noch **nicht** besteht.  
-* Ziehe dazu den Block ``||Logic:nicht||`` auf die Schleife,
-um den Wahrheitswert zu negieren.
-* Füge in den **nicht** Block nun 🛜``||IoTCube:Lese Gerätestatus-Bit||`` ein.
-Ändere darin das Bit auf **Verbunden**. Der Code in der Schleife lautet nun "während nicht Lese gerätestatus-Bit verbunden". Programmierer/innen lesen den Code so: 
-"Während das Gerät nicht verbunden ist." 
-* Schreibe mit dem Block 
-🖥️ ``||SmartfeldAktoren:schreibe String||`` bei jedem Schleifendurchlauf ein "." auf das Display.
-* Warte in der Schleife 1 Sekunde (1000 ms). Nutze ``||basic:pausiere (ms)||``.
+## 🛜 Build the internet connection
+Now we build a connection to the internet.
+On the OLED display 🖥️ we want to show the connection process with **...**.
+* Drag the block 🛜``||IoTCube:LoRa network connection||`` to the bottom of
+``||basic:on start||``.
+* Under it, place the block ``||loops:while false do||``. Because connecting can take 5 to 30 seconds, we want to stay in this loop as long as the connection does **not** exist.
+* Put the block ``||logic:not||`` into the loop to negate the condition.
+* Now insert 🛜``||IoTCube:read device status bit||`` into the **not** block.
+Change the bit to **connected**. The loop now reads "while not read device status bit connected". Programmers read this as: "While the device is not connected."
+* Use the block 🖥️ ``||SmartfeldAktoren:write string||`` to write a "." to the display on each loop iteration.
+* Wait 1 second (1000 ms) inside the loop using ``||basic:pause (ms)||``.
 
 ```blocks
 let seifenstandInProzent = 100
@@ -85,7 +78,7 @@ seifenstandInProzent,
 )
 smartfeldAktoren.oledInit(128, 64)
 smartfeldAktoren.oledClear()
-smartfeldAktoren.oledWriteStr("Verbinde")
+smartfeldAktoren.oledWriteStr("Connecting")
 // @highlight
 IoTCube.LoRa_Join(
 eBool.enable,
@@ -100,19 +93,17 @@ while (!(IoTCube.getStatus(eSTATUS_MASK.JOINED))) {
 }
 ```
 
-## 🛜 Status Verbunden anzeigen
-Die Schleife wird beendet, wenn die Verbindung besteht, d.h. wir können nach der Schleife "Verbunden" am Display anzeigen:
+## 🛜 Show "Connected" status
+The loop ends when the connection is established, so we can show "Connected" on the display after the loop:
 
-* Unter der eben erstellten ``||loops:während||`` Schleife löschst Du den Displayinhalt mittels 🖥️``||SmartfeldAktoren:Lösche Displayinhalt||``.
-* Im Anschluss schreibst du ein "Verbunden!" auf das OLED- Display🖥️
-* ``||basic:pausiere (ms)||`` für 2 Sekunden (=2000 ms), nachdem der Text "Verbunden!" ausgegeben wurde,
-damit dieser Text mindestens für diese Zeit auf dem Display steht.
-* Lösche danach den Text mit ``||SmartfeldAktoren:Lösche Displayinhalt||`` 
-um Energie zu sparen.
-* Drücke 📥`|Download|` und kontrolliere die Anzeige am OLED- Display🖥️.
+* Under the ``||loops:while||`` loop, clear the display using 🖥️``||SmartfeldAktoren:clear display||``.
+* Then write "Connected!" to the OLED display 🖥️.
+* ``||basic:pause (ms)||`` for 2 seconds (=2000 ms) after showing "Connected!" so the text stays on the display.
+* Then clear the text with ``||SmartfeldAktoren:clear display||`` to save energy.
+* Press 📥`|Download|` and check the OLED display 🖥️.
 
-Wird dir zuvor "Verbinde" und im Anschluss zunehmend mehr Punkte angezeigt, während die Verbindung aufgebaut wird?
-Wird dir "Verbunden!" für 2 Sekunden angezeigt?
+Do you first see "Connecting" and then more and more dots while the connection is built?
+Do you see "Connected!" for 2 seconds?
 
 ```blocks
 let seifenstandInProzent = 100
@@ -122,7 +113,7 @@ seifenstandInProzent,
 )
 smartfeldAktoren.oledInit(128, 64)
 smartfeldAktoren.oledClear()
-smartfeldAktoren.oledWriteStr("Verbinde")
+smartfeldAktoren.oledWriteStr("Connecting")
 IoTCube.LoRa_Join(
 eBool.enable,
 eBool.enable,
@@ -136,29 +127,26 @@ while (!(IoTCube.getStatus(eSTATUS_MASK.JOINED))) {
 // @highlight
 smartfeldAktoren.oledClear()
 // @highlight
-smartfeldAktoren.oledWriteStr("Verbunden!")
+smartfeldAktoren.oledWriteStr("Connected!")
 // @highlight
 basic.pause(2000)
 // @highlight
 smartfeldAktoren.oledClear()
 ```
 
-## 🛜 Funktion für den Verbindungsaufbau
+## 🛜 Function for connection setup
 
-Um die Übersicht zu behalten, werden beim Programmieren oft Funktionen eingesetzt. Wir wollen eine Funktion mit dem Namen **initialisiereLoRaVerbindung** erstellen, welche
-den Verbindungsaufbau beinhaltet.
-* Klappe den Bereich **Fortgeschritten** auf, hol dir den Block 
-``||functions:Erstelle eine Funktion...||`` und benenne 
-die Funktion **initialisiereLoRaVerbindung**.
-* Ziehe alle Code- Blöcke, welche im Zusammenhang mit dem Verbindungsaufbau stehen in diese neue Funktion. 
-Klicke auf die 💡Glühbirne, um zu klären, welche Code- Blöcke gemeint sind.
-* Hol dir den Block ``||functions:Aufruf initialisiereLoRaVerbindung ||`` und ziehe diesen zuunterst in den Block **beim Start**.
+To keep the program clear, we often use functions. We want to create a function named **initializeLoRaConnection** that contains the connection setup.
+* Open **Advanced**, get the block ``||functions:Make a Function...||`` and name it **initializeLoRaConnection**.
+* Move all code blocks related to the connection setup into this new function.
+Click the 💡 bulb to see which blocks are meant.
+* Get the block ``||functions:call initializeLoRaConnection||`` and place it at the bottom of **on start**.
 
 ```blocks
 // @highlight
-function initialisiereLoRaVerbindung() {
+function initializeLoRaConnection() {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -170,7 +158,7 @@ function initialisiereLoRaVerbindung() {
         basic.pause(1000)
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
@@ -181,18 +169,18 @@ led.plotBarGraph(
 seifenstandInProzent,
 100
 )
-initialisiereLoRaVerbindung()
+initializeLoRaConnection()
 ```
 
-## 🧼 Seifenstand senden beim Start
+## 🧼 Send the soap level at start
 
-Zu Beginn ist der Seifenstand 100 %.
-Diesen wollen wir nach dem Initialisieren der LoRa Verbindung senden.
+At the beginning the soap level is 100%.
+We want to send this after initializing the LoRa connection.
 
-* Setze unter den Aufruf der Funktion ``||functions:initialisierLoRaVerbindung||`` den Block ``||IoTCube:Ganzzahl mit ID_0 = 0 hinzufügen||`` ein.
-* Die 0 ersetzt du nun mit der Variable ``||variables:seifenstandInProzent||``.
-* Schicke nun den Seifenstand mit dem Befehl ``||IoTCube:Sende Daten||`` in die ☁️ Cloud!
-* Drücke 📥`|Download|`.
+* Under the function call ``||functions:initializeLoRaConnection||`` add the block ``||IoTCube:add unsigned integer with ID_0 = 0||``.
+* Replace the 0 with the variable ``||variables:seifenstandInProzent||``.
+* Now send the soap level to the ☁️ cloud with ``||IoTCube:send data||``.
+* Press 📥`|Download|`.
 
 ```blocks
 let seifenstandInProzent = 100
@@ -201,15 +189,15 @@ seifenstandInProzent,
 100
 )
 smartfeldAktoren.oledInit(128, 64)
-initialisiereLoRaVerbindung()
+initializeLoRaConnection()
 // @highlight
 IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
 // @highlight
 IoTCube.SendBufferSimple()
 // @hide
-function initialisiereLoRaVerbindung () {
+function initializeLoRaConnection () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -221,34 +209,30 @@ function initialisiereLoRaVerbindung () {
         basic.pause(1000)
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
 ```
 
-## ☁️ Dashboard erstellen auf Clavis Cloud 
+## ☁️ Create a dashboard in Clavis Cloud
 
-Nun geht es an die Visualisierung der Daten auf der Clavis Cloud ☁️.
-* Rufe die Website [🌍iot.claviscloud.ch](https://iot.claviscloud.ch/home) auf.
-* Melde dich an (Login- Informationen kriegst Du von der Lehrperson/ Kursleitung).
-* Schau dir dieses [📹 Video](https://wiki.smartfeld.ch/lib/exe/fetch.php?media=dashboard_erstellen_seifenspender.mp4) an. Es beinhaltet folgende Schritte. 
-Führe diese selbst aus und erstelle somit ein Dashboard.
- * Erstelle ein neues Dashboard in eurer Klassengruppe 
- * Erstelle ein Widget für die Anzeige des Seifenstandes🧼
+Now we visualize the data in Clavis Cloud ☁️.
+* Go to [🌍iot.claviscloud.ch](https://iot.claviscloud.ch/home).
+* Sign in (your teacher or course lead will give you the login info).
+* Watch this [📹 video](https://wiki.smartfeld.ch/lib/exe/fetch.php?media=dashboard_erstellen_seifenspender.mp4). It includes these steps.
+Follow them and create a dashboard.
+ * Create a new dashboard in your class group.
+ * Create a widget to display the soap level 🧼.
 
-## 🧼 Seifenstand bei Änderung senden
+## 🧼 Send the soap level when it changes
 
-Immer wenn sich der Seifenstand ändert, dann soll der aktuelle Stand an die Cloud geschickt werden. Führe die nötigen Schritte durch:
+Whenever the soap level changes, the current value should be sent to the cloud. Do the following:
 
-* Wenn Knopf A geklickt ist, schickst Du 
-  den aktuellen Seifenstand mithilfe der Blöcke ``||IoTCube:Ganzzahl mit ID_0 = 0 hinzufügen||``, 
-  und ``||IoTCube:Sende Daten||`` ins Internet. Falls du unsicher bist, klicke
-  auf die 💡Glühbirne links unten.
-* Dasselbe machst du, wenn Knopf B geklickt wurde. Falls du unsicher bist, klicke
-  auf die 💡Glühbirne links unten.
-* Vergiss nicht die Variable zu senden (nicht einfach eine 0).
-* Hinweis: Grundsätzlich könntest du dein Programm jetzt schon wieder testen, aber bearbeite besser die nächsten beiden Schritte um Nebeneffekte zu vermeiden.
+* When button A is pressed, send the current soap level using the blocks ``||IoTCube:add unsigned integer with ID_0 = 0||`` and ``||IoTCube:send data||``. If you are unsure, click the 💡 bulb in the lower left.
+* Do the same when button B is pressed. If you are unsure, click the 💡 bulb in the lower left.
+* Do not forget to send the variable (not just a 0).
+* Note: You could test your program now, but it is better to finish the next two steps to avoid side effects.
 
 ```blocks
 basic.forever(function () {
@@ -282,52 +266,49 @@ basic.forever(function () {
 
 ```
 
-## ⏱️ Funktion für Wartezeit erstellen
+## ⏱️ Create a waiting function
 
-Nach dem Versenden von Daten über LoRa ist eine Wartezeit von mindestens 
-5 Sekunden erforderlich, bevor erneut Daten übertragen werden können. 
-Hintergrund: Während dieser 5 Sekunden steht ein Empfangsfenster zur Verfügung, 
-über das Daten von der Cloud zum Cube übertragen werden können.
+After sending data over LoRa, you must wait at least 5 seconds before sending again.
+Background: During these 5 seconds there is a receive window for data from the cloud to the Cube.
 
-Baue dir mit folgenden Blöcken die Wartefunktion nach, welche im Tooltip
-(die 💡Glühbirne links unten) angezeigt wird.
+Recreate the waiting function shown in the tooltip (the 💡 bulb in the lower left) using these blocks:
 
-* ``||function:Erstelle eine Funktion||`` (im Bereich Fortgeschritten zu finden)
-    * Benenne die Funktion mit "warte5SekundenUndZeigeFortschritt" und klicke auf **Fertig**.
-    * Lösche darin den Displayinhalt mit ``||SmartfeldAktoren:Lösche Displayinhalt||`` 
-    * ``||loops:für Index von 0 bis 4||`` 
-        * klicke auf Index --> klicke auf **Neue Variable**, Neuer Variablenname: **fortschritt**
-        * ersetze die 4 mit 100.
-    * ``||SmartfeldAktoren:zeichne Ladebalken bei 0 Prozent||`` 
-        * ersetze die 0 mit der Variable **fortschritt**
-    * Warte in der Schleife mit ``||basic:pausiere (ms)||`` jeweils für 50 ms
-     (100x 50ms = 5 Sekunden)
-    * Lösche den Displayinhalt erneut nach der Schleife.
+* ``||function:Make a function||`` (found in Advanced)
+    * Name the function "wait5SecondsAndShowProgress" and click **Done**.
+    * Clear the display inside with ``||SmartfeldAktoren:clear display||``.
+    * ``||loops:for index from 0 to 4||``
+        * click on index --> click **New Variable**, new variable name: **progress**
+        * replace the 4 with 100.
+    * ``||SmartfeldAktoren:plot loading bar at 0 percent||``
+        * replace the 0 with the variable **progress**.
+    * Wait in the loop with ``||basic:pause (ms)||`` for 50 ms each time
+     (100x 50 ms = 5 seconds).
+    * Clear the display again after the loop.
 
 ```blocks
 // @highlight
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(50)
     }
     smartfeldAktoren.oledClear()
 }
 ```
 
-## ⏱️ Wartezeit einbauen
+## ⏱️ Add the waiting time
 
-* Nach jedem Befehl ``||IoTCube:Sende Daten||`` (insgesamt 3x) fügst Du die Funktion aus dem Bereich Fortgeschritten ``||function:warte5SekundenUndZeigeFortschritt||`` ein.
-* 📥 Drücke `|Download|` und kontrolliere ob...
-    * der Ladebalken am OLED-Display bei Tastendruck angezeigt wird
-    * die Daten auf deinem Dashboard angezeigt werden: [iot.claviscloud.ch](https://iot.claviscloud.ch/dashboards/)
+* After each ``||IoTCube:send data||`` command (3x in total) add the Advanced function ``||function:wait5SecondsAndShowProgress||``.
+* 📥 Press `|Download|` and check if...
+    * the loading bar appears on the OLED display when a button is pressed
+    * the data is shown on your dashboard: [iot.claviscloud.ch](https://iot.claviscloud.ch/dashboards/)
 
 ```blocks
 // @hide
-function initialisiereLoRaVerbindung () {
+function initializeLoRaConnection () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -339,15 +320,15 @@ function initialisiereLoRaVerbindung () {
         basic.pause(1000)
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
 // @hide
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(50)
     }
     smartfeldAktoren.oledClear()
@@ -358,11 +339,11 @@ seifenstandInProzent,
 100
 )
 smartfeldAktoren.oledInit(128, 64)
-initialisiereLoRaVerbindung()
+initializeLoRaConnection()
 IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
 IoTCube.SendBufferSimple()
 // @highlight
-warte5SekundenUndZeigeFortschritt()
+wait5SecondsAndShowProgress()
 basic.forever(function () {
     if (input.buttonIsPressed(Button.A)) {
         seifenstandInProzent += -20
@@ -376,7 +357,7 @@ basic.forever(function () {
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
         // @highlight
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
     }
     if (input.buttonIsPressed(Button.B)) {
         seifenstandInProzent = 100
@@ -387,24 +368,23 @@ basic.forever(function () {
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
         // @highlight
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
     }
     basic.pause(150)
 })
 ```
 
-## 🪫 Energie sparen
+## 🪫 Save energy
 
-* Um Energie zu sparen kannst du die Anzeige des Seifenstandes🧼 in der
-bestehenden ``||basic:dauerhaft||`` Schleife nach jedem Durchlauf löschen.
-Nutze dazu ``||basic:Bildschirminhalt löschen||``.
-* 📥 Drücke `|Download|` und teste Dein fertiges Programm!
+* To save energy you can clear the soap level display 🧼 in the existing ``||basic:forever||`` loop after each iteration.
+Use ``||basic:clear screen||``.
+* 📥 Press `|Download|` and test your final program.
 
 ```blocks
 // @hide
-function initialisiereLoRaVerbindung () {
+function initializeLoRaConnection () {
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbinde")
+    smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
     eBool.enable,
     eBool.enable,
@@ -416,15 +396,15 @@ function initialisiereLoRaVerbindung () {
         basic.pause(1000)
     }
     smartfeldAktoren.oledClear()
-    smartfeldAktoren.oledWriteStr("Verbunden!")
+    smartfeldAktoren.oledWriteStr("Connected!")
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
 // @hide
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(50)
     }
     smartfeldAktoren.oledClear()
@@ -436,10 +416,10 @@ seifenstandInProzent,
 100
 )
 smartfeldAktoren.oledInit(128, 64)
-initialisiereLoRaVerbindung()
+initializeLoRaConnection()
 IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
 IoTCube.SendBufferSimple()
-warte5SekundenUndZeigeFortschritt()
+wait5SecondsAndShowProgress()
 
 basic.forever(function () {
     if (input.buttonIsPressed(Button.A)) {
@@ -453,7 +433,7 @@ basic.forever(function () {
         )
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
     }
     if (input.buttonIsPressed(Button.B)) {
         seifenstandInProzent = 100
@@ -463,7 +443,7 @@ basic.forever(function () {
         )
         IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
         IoTCube.SendBufferSimple()
-        warte5SekundenUndZeigeFortschritt()
+        wait5SecondsAndShowProgress()
     }
     basic.pause(150)
     // @highlight
@@ -472,10 +452,10 @@ basic.forever(function () {
 
 ```
 
-## Gratuliere 🏆 - du hast den Teil 2 erfolgreich bearbeitet 🚀
+## Congratulations 🏆 - you have successfully completed Part 2 🚀
 
-* Weiter gehts mit Teil 3: [Teil 3](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-3)
-* Falls irgendwas noch nicht richtig läuft, hier hast Du eine funktionierende Version zum testen: [Lösung Teil 2](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial/docs/tutorials/seifenspender-part-2-solution)
+* Continue with Part 3: [Part 3](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-3)
+* If something is not working yet, here is a working version to test: [Solution Part 2](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/seifenspender-part-2-solution)
 
 ```template
 let seifenstandInProzent = 100
