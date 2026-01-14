@@ -60,6 +60,7 @@ The goal is to show the current soap level on the IoT Cube.
 * Put the variable ``||variables:seifenstandInProzent||`` 🧼 in the first input of **plot bar graph of**.
 * Set the range from **seifenstandInProzent** 🧼 to 100.
 * 📥 Press `|Download|` and check the LED display:
+
 🟥🟥🟥🟥🟥<br>
 🟥🟥🟥🟥🟥<br>
 🟥🟥🟥🟥🟥<br>
