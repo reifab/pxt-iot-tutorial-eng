@@ -38,42 +38,42 @@ function wait5SecondsAndShowProgress () {
     }
     smartfeldAktoren.oledClear()
 }
-let zwischenresultat = 0
-let distanzSensorZuSeife = 0
-let seifenstandAlt = -1
-let seifenstandInProzent = 100
+let intermediateResult = 0
+let distanceSensorToSoap = 0
+let previousSoapLevelPercent = -1
+let soapLevelPercent = 100
 led.plotBarGraph(
-seifenstandInProzent,
+soapLevelPercent,
 100
 )
 smartfeldAktoren.oledInit(128, 64)
 if (true) {
     initializeLoRaConnection()
-    IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+    IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
     IoTCube.SendBufferSimple()
     wait5SecondsAndShowProgress()
 }
 basic.forever(function () {
     smartfeldAktoren.oledClear()
-    distanzSensorZuSeife = smartfeldSensoren.measureInCentimetersV2(DigitalPin.P0)
-    zwischenresultat = 25 - distanzSensorZuSeife
-    zwischenresultat = zwischenresultat / 25
-    seifenstandInProzent = zwischenresultat * 100
-    seifenstandInProzent = Math.round(seifenstandInProzent)
-    if (seifenstandInProzent < 0) {
-        seifenstandInProzent = 0
+    distanceSensorToSoap = smartfeldSensoren.measureInCentimetersV2(DigitalPin.P0)
+    intermediateResult = 25 - distanceSensorToSoap
+    intermediateResult = intermediateResult / 25
+    soapLevelPercent = intermediateResult * 100
+    soapLevelPercent = Math.round(soapLevelPercent)
+    if (soapLevelPercent < 0) {
+        soapLevelPercent = 0
     }
-    smartfeldAktoren.oledWriteNum(seifenstandInProzent)
+    smartfeldAktoren.oledWriteNum(soapLevelPercent)
     smartfeldAktoren.oledWriteStr(" %")
     led.plotBarGraph(
-    seifenstandInProzent,
+    soapLevelPercent,
     100
     )
-    if (seifenstandAlt != seifenstandInProzent) {
-        IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+    if (previousSoapLevelPercent != soapLevelPercent) {
+        IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
         IoTCube.SendBufferSimple()
         wait5SecondsAndShowProgress()
-        seifenstandAlt = seifenstandInProzent
+        previousSoapLevelPercent = soapLevelPercent
     }
     basic.pause(150)
     basic.clearScreen()

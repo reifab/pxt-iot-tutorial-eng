@@ -71,8 +71,8 @@ To detect the door state continuously, we read the sensor in the existing ``||ba
 
 ```blocks
 //@hide
-function macheFrei () {
-    statusFreiOderBesetzt = 1
+function setFree () {
+    freeOrOccupiedStatus = 1
     basic.showLeds(`
         . . # . .
         . # # # .
@@ -80,11 +80,11 @@ function macheFrei () {
         . . # . .
         . . # . .
         `)
-    sendeDaten(statusFreiOderBesetzt)
+    sendData(freeOrOccupiedStatus)
 }
 //@hide
-function macheBesetzt () {
-    statusFreiOderBesetzt = 0
+function setOccupied () {
+    freeOrOccupiedStatus = 0
     basic.showLeds(`
         . . . . #
         . . . . #
@@ -92,26 +92,26 @@ function macheBesetzt () {
         # # # # #
         . # # # .
         `)
-    sendeDaten(statusFreiOderBesetzt)
+    sendData(freeOrOccupiedStatus)
 }
 //@hide
-function sendeDaten (status: number) {
-    if (control.millis() > msBeiLetztemSenden + 5000) {
+function sendData (status: number) {
+    if (control.millis() > msAtLastSend + 5000) {
         IoTCube.addBinary(eIDs.ID_0, status)
         IoTCube.SendBufferSimple()
         music.play(music.tonePlayable(262, music.beat(BeatFraction.Whole)), music.PlaybackMode.UntilDone)
-        spaeterSenden = false
-        msBeiLetztemSenden = control.millis()
+        sendLater = false
+        msAtLastSend = control.millis()
     } else {
-        spaeterSenden = true
+        sendLater = true
     }
 }
 
 basic.forever(function () {
     //@highlight
-    zustandTür = smartfeldSensoren.fieldDetected(DigitalPin.P2)
-    if (spaeterSenden) {
-        sendeDaten(statusFreiOderBesetzt)
+    doorState = smartfeldSensoren.fieldDetected(DigitalPin.P2)
+    if (sendLater) {
+        sendData(freeOrOccupiedStatus)
     }
 })
 ```
@@ -132,8 +132,8 @@ If the door is closed, we assume the toilet is **occupied**. Otherwise we assume
 
 ```blocks
 //@hide
-function macheFrei () {
-    statusFreiOderBesetzt = 1
+function setFree () {
+    freeOrOccupiedStatus = 1
     basic.showLeds(`
         . . # . .
         . # # # .
@@ -141,11 +141,11 @@ function macheFrei () {
         . . # . .
         . . # . .
         `)
-    sendeDaten(statusFreiOderBesetzt)
+    sendData(freeOrOccupiedStatus)
 }
 //@hide
-function macheBesetzt () {
-    statusFreiOderBesetzt = 0
+function setOccupied () {
+    freeOrOccupiedStatus = 0
     basic.showLeds(`
         . . . . #
         . . . . #
@@ -153,31 +153,31 @@ function macheBesetzt () {
         # # # # #
         . # # # .
         `)
-    sendeDaten(statusFreiOderBesetzt)
+    sendData(freeOrOccupiedStatus)
 }
 //@hide
-function sendeDaten (status: number) {
-    if (control.millis() > msBeiLetztemSenden + 5000) {
+function sendData (status: number) {
+    if (control.millis() > msAtLastSend + 5000) {
         IoTCube.addBinary(eIDs.ID_0, status)
         IoTCube.SendBufferSimple()
         music.play(music.tonePlayable(262, music.beat(BeatFraction.Whole)), music.PlaybackMode.UntilDone)
-        spaeterSenden = false
-        msBeiLetztemSenden = control.millis()
+        sendLater = false
+        msAtLastSend = control.millis()
     } else {
-        spaeterSenden = true
+        sendLater = true
     }
 }
 
 basic.forever(function () {
-    zustandTür = smartfeldSensoren.fieldDetected(DigitalPin.P2)
+    doorState = smartfeldSensoren.fieldDetected(DigitalPin.P2)
     //@highlight
-    if (zustandTür == 1) {
-        macheBesetzt()
+    if (doorState == 1) {
+        setOccupied()
     } else {
-        macheFrei()
+        setFree()
     }
-    if (spaeterSenden) {
-        sendeDaten(statusFreiOderBesetzt)
+    if (sendLater) {
+        sendData(freeOrOccupiedStatus)
     }
 })
 ```
@@ -199,8 +199,8 @@ That costs unnecessary energy. It makes more sense to send only when the door st
 
 ```blocks
 //@hide
-function macheFrei () {
-    statusFreiOderBesetzt = 1
+function setFree () {
+    freeOrOccupiedStatus = 1
     basic.showLeds(`
         . . # . .
         . # # # .
@@ -208,11 +208,11 @@ function macheFrei () {
         . . # . .
         . . # . .
         `)
-    sendeDaten(statusFreiOderBesetzt)
+    sendData(freeOrOccupiedStatus)
 }
 //@hide
-function macheBesetzt () {
-    statusFreiOderBesetzt = 0
+function setOccupied () {
+    freeOrOccupiedStatus = 0
     basic.showLeds(`
         . . . . #
         . . . . #
@@ -220,23 +220,23 @@ function macheBesetzt () {
         # # # # #
         . # # # .
         `)
-    sendeDaten(statusFreiOderBesetzt)
+    sendData(freeOrOccupiedStatus)
 }
 //@hide
-function sendeDaten (status: number) {
-    if (control.millis() > msBeiLetztemSenden + 5000) {
+function sendData (status: number) {
+    if (control.millis() > msAtLastSend + 5000) {
         IoTCube.addBinary(eIDs.ID_0, status)
         IoTCube.SendBufferSimple()
         music.play(music.tonePlayable(262, music.beat(BeatFraction.Whole)), music.PlaybackMode.UntilDone)
-        spaeterSenden = false
-        msBeiLetztemSenden = control.millis()
+        sendLater = false
+        msAtLastSend = control.millis()
     } else {
-        spaeterSenden = true
+        sendLater = true
     }
 }
-let statusFreiOderBesetzt = 0
-let spaeterSenden = false
-let msBeiLetztemSenden = 0
+let freeOrOccupiedStatus = 0
+let sendLater = false
+let msAtLastSend = 0
 IoTCube.LoRa_Join(
 eBool.enable,
 eBool.enable,
@@ -256,25 +256,25 @@ while (!(IoTCube.getStatus(eSTATUS_MASK.JOINED))) {
 }
 basic.showIcon(IconNames.Yes)
 basic.pause(5000)
-msBeiLetztemSenden = control.millis()
-spaeterSenden = false
-let zustandTür = 0
-macheFrei()
+msAtLastSend = control.millis()
+sendLater = false
+let doorState = 0
+setFree()
 //@highlight
-let zustandTürDavor = -1
+let previousDoorState = -1
 basic.forever(function () {
-    zustandTür = smartfeldSensoren.fieldDetected(DigitalPin.P2)
+    doorState = smartfeldSensoren.fieldDetected(DigitalPin.P2)
     //@highlight
-    if (zustandTür != zustandTürDavor) {
-        zustandTürDavor = zustandTür
-        if (zustandTür == 1) {
-            macheBesetzt()
+    if (doorState != previousDoorState) {
+        previousDoorState = doorState
+        if (doorState == 1) {
+            setOccupied()
         } else {
-            macheFrei()
+            setFree()
         }
     }
-    if (spaeterSenden) {
-        sendeDaten(statusFreiOderBesetzt)
+    if (sendLater) {
+        sendData(freeOrOccupiedStatus)
     }
 })
 ```
@@ -287,8 +287,8 @@ basic.forever(function () {
 [Solution Part 3](https://makecode.microbit.org/#tutorial:github:reifab/pxt-iot-tutorial-eng/docs/tutorials/smart-toilet-part-3-solution)
 
 ```template
-function macheFrei () {
-    statusFreiOderBesetzt = 1
+function setFree () {
+    freeOrOccupiedStatus = 1
     basic.showLeds(`
         . . # . .
         . # # # .
@@ -296,10 +296,10 @@ function macheFrei () {
         . . # . .
         . . # . .
         `)
-    sendeDaten(statusFreiOderBesetzt)
+    sendData(freeOrOccupiedStatus)
 }
-function macheBesetzt () {
-    statusFreiOderBesetzt = 0
+function setOccupied () {
+    freeOrOccupiedStatus = 0
     basic.showLeds(`
         . . . . #
         . . . . #
@@ -307,22 +307,22 @@ function macheBesetzt () {
         # # # # #
         . # # # .
         `)
-    sendeDaten(statusFreiOderBesetzt)
+    sendData(freeOrOccupiedStatus)
 }
-function sendeDaten (status: number) {
-    if (control.millis() > msBeiLetztemSenden + 5000) {
+function sendData (status: number) {
+    if (control.millis() > msAtLastSend + 5000) {
         IoTCube.addBinary(eIDs.ID_0, status)
         IoTCube.SendBufferSimple()
         music.play(music.tonePlayable(262, music.beat(BeatFraction.Whole)), music.PlaybackMode.UntilDone)
-        spaeterSenden = false
-        msBeiLetztemSenden = control.millis()
+        sendLater = false
+        msAtLastSend = control.millis()
     } else {
-        spaeterSenden = true
+        sendLater = true
     }
 }
-let statusFreiOderBesetzt = 0
-let spaeterSenden = false
-let msBeiLetztemSenden = 0
+let freeOrOccupiedStatus = 0
+let sendLater = false
+let msAtLastSend = 0
 IoTCube.LoRa_Join(
 eBool.enable,
 eBool.enable,
@@ -341,14 +341,14 @@ while (!(IoTCube.getStatus(eSTATUS_MASK.JOINED))) {
 }
 basic.showIcon(IconNames.Yes)
 basic.pause(5000)
-msBeiLetztemSenden = control.millis()
-spaeterSenden = false
+msAtLastSend = control.millis()
+sendLater = false
 
-macheFrei()
+setFree()
 
 basic.forever(function () {
-    if (spaeterSenden) {
-        sendeDaten(statusFreiOderBesetzt)
+    if (sendLater) {
+        sendData(freeOrOccupiedStatus)
     }
 })
 
