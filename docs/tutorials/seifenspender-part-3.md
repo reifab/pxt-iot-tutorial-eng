@@ -45,8 +45,8 @@ The sending of the soap level and the waiting function are kept.
 ```blocks
 // @highlight
 basic.forever(function () {  
-    led.plotBarGraph(seifenstandInProzent,100)
-    IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+    led.plotBarGraph(soapLevelPercent,100)
+    IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
     IoTCube.SendBufferSimple()
     wait5SecondsAndShowProgress()
     basic.pause(150)
@@ -73,25 +73,25 @@ This prevents sending as soon as you set the value to **false**.
 * In **on start** also use the block ``||logic:if true then||`` to prevent sending data (set the block to **false**).
 
 ```blocks
-let seifenstandInProzent = 100
+let soapLevelPercent = 100
 led.plotBarGraph(
-seifenstandInProzent,
+soapLevelPercent,
 100
 )
 smartfeldAktoren.oledInit(128, 64)
 // @highlight
 if (false) {
     initializeLoRaConnection()
-    IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+    IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
     IoTCube.SendBufferSimple()
     wait5SecondsAndShowProgress()
 }
 
 basic.forever(function () {
-    led.plotBarGraph(seifenstandInProzent,100)
+    led.plotBarGraph(soapLevelPercent,100)
     // @highlight
     if (false) {
-        IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+        IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
         IoTCube.SendBufferSimple()
         wait5SecondsAndShowProgress()
     }
@@ -141,13 +141,13 @@ function initializeLoRaConnection () {
 ```blocks
 basic.forever(function () {
     // @highlight
-    distanzSensorZuSeife = smartfeldSensoren.measureInCentimetersV2(DigitalPin.P0)
+    distanceSensorToSoap = smartfeldSensoren.measureInCentimetersV2(DigitalPin.P0)
     led.plotBarGraph(
-    seifenstandInProzent,
+    soapLevelPercent,
     100
     )
     if (false) {
-        IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+        IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
         IoTCube.SendBufferSimple()
         wait5SecondsAndShowProgress()
     }
@@ -183,17 +183,17 @@ basic.forever(function () {
     // @highlight
     smartfeldAktoren.oledClear()
     // @highlight
-    distanzSensorZuSeife = smartfeldSensoren.measureInCentimetersV2(DigitalPin.P0)
+    distanceSensorToSoap = smartfeldSensoren.measureInCentimetersV2(DigitalPin.P0)
     // @highlight
-    smartfeldAktoren.oledWriteNum(Math.round(distanzSensorZuSeife))
+    smartfeldAktoren.oledWriteNum(Math.round(distanceSensorToSoap))
     // @highlight
     smartfeldAktoren.oledWriteStr(" cm")
     led.plotBarGraph(
-    seifenstandInProzent,
+    soapLevelPercent,
     100
     )
     if (false) {
-        IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+        IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
         IoTCube.SendBufferSimple()
         wait5SecondsAndShowProgress()
     }
@@ -240,29 +240,29 @@ You may create another variable for intermediate results.
 ```blocks
 basic.forever(function () {
     smartfeldAktoren.oledClear()
-    distanzSensorZuSeife = smartfeldSensoren.measureInCentimetersV2(DigitalPin.P0)
+    distanceSensorToSoap = smartfeldSensoren.measureInCentimetersV2(DigitalPin.P0)
     // @highlight
-    zwischenresultat = 25 - distanzSensorZuSeife
+    intermediateResult = 25 - distanceSensorToSoap
     // @highlight
-    zwischenresultat = zwischenresultat / 25
+    intermediateResult = intermediateResult / 25
     // @highlight
-    seifenstandInProzent = zwischenresultat * 100
+    soapLevelPercent = intermediateResult * 100
     // @highlight
-    seifenstandInProzent = Math.round(seifenstandInProzent)
+    soapLevelPercent = Math.round(soapLevelPercent)
     // @highlight
-    if (seifenstandInProzent < 0) {
-        seifenstandInProzent = 0
+    if (soapLevelPercent < 0) {
+        soapLevelPercent = 0
     }
     // @highlight
-    smartfeldAktoren.oledWriteNum(seifenstandInProzent)
+    smartfeldAktoren.oledWriteNum(soapLevelPercent)
     // @highlight
     smartfeldAktoren.oledWriteStr(" %")
     led.plotBarGraph(
-    seifenstandInProzent,
+    soapLevelPercent,
     100
     )
     if (false) {
-        IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+        IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
         IoTCube.SendBufferSimple()
         wait5SecondsAndShowProgress()
     }
@@ -294,47 +294,47 @@ If yes, send the current value to the cloud (already present) and set ``||variab
 * In **on start**, set the condition back to **true** so the connection setup runs again.
 
 ```blocks
-let zwischenresultat = 0
-let distanzSensorZuSeife = 0
+let intermediateResult = 0
+let distanceSensorToSoap = 0
 // @highlight
-let seifenstandAlt = -1
+let previousSoapLevelPercent = -1
 smartfeldAktoren.oledInit(128, 64)
-let seifenstandInProzent = 100
+let soapLevelPercent = 100
 led.plotBarGraph(
-seifenstandInProzent,
+soapLevelPercent,
 100
 )
 smartfeldAktoren.oledInit(128, 64)
 
 if (true) {
     initializeLoRaConnection()
-    IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+    IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
     IoTCube.SendBufferSimple()
     wait5SecondsAndShowProgress()
 }
 basic.forever(function () {
     smartfeldAktoren.oledClear()
-    distanzSensorZuSeife = smartfeldSensoren.measureInCentimetersV2(DigitalPin.P0)
-    zwischenresultat = 25 - distanzSensorZuSeife
-    zwischenresultat = zwischenresultat / 25
-    seifenstandInProzent = zwischenresultat * 100
-    seifenstandInProzent = Math.round(seifenstandInProzent)
-    if (seifenstandInProzent < 0) {
-        seifenstandInProzent = 0
+    distanceSensorToSoap = smartfeldSensoren.measureInCentimetersV2(DigitalPin.P0)
+    intermediateResult = 25 - distanceSensorToSoap
+    intermediateResult = intermediateResult / 25
+    soapLevelPercent = intermediateResult * 100
+    soapLevelPercent = Math.round(soapLevelPercent)
+    if (soapLevelPercent < 0) {
+        soapLevelPercent = 0
     }
-    smartfeldAktoren.oledWriteNum(seifenstandInProzent)
+    smartfeldAktoren.oledWriteNum(soapLevelPercent)
     smartfeldAktoren.oledWriteStr(" %")
     led.plotBarGraph(
-        seifenstandInProzent,
+        soapLevelPercent,
         100
     )
     // @highlight
-    if (seifenstandAlt != seifenstandInProzent) {
-        IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+    if (previousSoapLevelPercent != soapLevelPercent) {
+        IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
         IoTCube.SendBufferSimple()
         wait5SecondsAndShowProgress()
         // @highlight
-        seifenstandAlt = seifenstandInProzent
+        previousSoapLevelPercent = soapLevelPercent
     }
     basic.pause(150)
     basic.clearScreen()
@@ -404,42 +404,42 @@ function wait5SecondsAndShowProgress () {
     }
     smartfeldAktoren.oledClear()
 }
-let zwischenresultat = 0
-let distanzSensorZuSeife = 0
-let seifenstandAlt = -1
-let seifenstandInProzent = 100
+let intermediateResult = 0
+let distanceSensorToSoap = 0
+let previousSoapLevelPercent = -1
+let soapLevelPercent = 100
 led.plotBarGraph(
-seifenstandInProzent,
+soapLevelPercent,
 100
 )
 smartfeldAktoren.oledInit(128, 64)
 if (true) {
     initializeLoRaConnection()
-    IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+    IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
     IoTCube.SendBufferSimple()
     wait5SecondsAndShowProgress()
 }
 basic.forever(function () {
     smartfeldAktoren.oledClear()
-    distanzSensorZuSeife = smartfeldSensoren.measureInCentimetersV2(DigitalPin.P0)
-    zwischenresultat = 25 - distanzSensorZuSeife
-    zwischenresultat = zwischenresultat / 25
-    seifenstandInProzent = zwischenresultat * 100
-    seifenstandInProzent = Math.round(seifenstandInProzent)
-    if (seifenstandInProzent < 0) {
-        seifenstandInProzent = 0
+    distanceSensorToSoap = smartfeldSensoren.measureInCentimetersV2(DigitalPin.P0)
+    intermediateResult = 25 - distanceSensorToSoap
+    intermediateResult = intermediateResult / 25
+    soapLevelPercent = intermediateResult * 100
+    soapLevelPercent = Math.round(soapLevelPercent)
+    if (soapLevelPercent < 0) {
+        soapLevelPercent = 0
     }
-    smartfeldAktoren.oledWriteNum(seifenstandInProzent)
+    smartfeldAktoren.oledWriteNum(soapLevelPercent)
     smartfeldAktoren.oledWriteStr(" %")
     led.plotBarGraph(
-    seifenstandInProzent,
+    soapLevelPercent,
     100
     )
-    if (seifenstandAlt != seifenstandInProzent) {
-        IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+    if (previousSoapLevelPercent != soapLevelPercent) {
+        IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
         IoTCube.SendBufferSimple()
         wait5SecondsAndShowProgress()
-        seifenstandAlt = seifenstandInProzent
+        previousSoapLevelPercent = soapLevelPercent
     }
     basic.pause(150)
     basic.clearScreen()
@@ -477,37 +477,37 @@ function wait5SecondsAndShowProgress () {
     }
     smartfeldAktoren.oledClear()
 }
-let seifenstandInProzent = 100
+let soapLevelPercent = 100
 led.plotBarGraph(
-seifenstandInProzent,
+soapLevelPercent,
 100
 )
 smartfeldAktoren.oledInit(128, 64)
 initializeLoRaConnection()
-IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
 IoTCube.SendBufferSimple()
 wait5SecondsAndShowProgress()
 basic.forever(function () {
     if (input.buttonIsPressed(Button.A)) {
-        seifenstandInProzent += -20
-        if (seifenstandInProzent < 0) {
-            seifenstandInProzent = 0
+        soapLevelPercent += -20
+        if (soapLevelPercent < 0) {
+            soapLevelPercent = 0
         }
         led.plotBarGraph(
-        seifenstandInProzent,
+        soapLevelPercent,
         100
         )
-        IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+        IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
         IoTCube.SendBufferSimple()
         wait5SecondsAndShowProgress()
     }
     if (input.buttonIsPressed(Button.B)) {
-        seifenstandInProzent = 100
+        soapLevelPercent = 100
         led.plotBarGraph(
-        seifenstandInProzent,
+        soapLevelPercent,
         100
         )
-        IoTCube.addUnsignedInteger(eIDs.ID_0, seifenstandInProzent)
+        IoTCube.addUnsignedInteger(eIDs.ID_0, soapLevelPercent)
         IoTCube.SendBufferSimple()
         wait5SecondsAndShowProgress()
     }

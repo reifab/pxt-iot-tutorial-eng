@@ -72,8 +72,8 @@ Now we measure the brightness with the sunlight sensor 👁️ twice: once with 
   * How much do the values vary with seemingly constant ambient light?
 
 ```blocks
-let h_umgebung = 0
-let h_mitLED = 0
+let ambientLight = 0
+let lightWithLed = 0
 // @highlight
 smartfeldSensoren.initSunlight()
 // @highlight
@@ -86,18 +86,18 @@ basic.forever(function () {
     strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Black))
     strip.show()
     // @highlight
-    h_umgebung = smartfeldSensoren.getHalfWord_Visible()
+    ambientLight = smartfeldSensoren.getHalfWord_Visible()
     // @highlight
-    smartfeldAktoren.oledWriteNum(h_umgebung)
+    smartfeldAktoren.oledWriteNum(ambientLight)
     // @highlight
     smartfeldAktoren.oledWriteStr("-")
     basic.pause(200)
     strip.setPixelColor(2, neopixel.colors(NeoPixelColors.White))
     strip.show()
      // @highlight
-    h_mitLED= smartfeldSensoren.getHalfWord_Visible()
+    lightWithLed= smartfeldSensoren.getHalfWord_Visible()
     // @highlight
-    smartfeldAktoren.oledWriteNum(h_mitLED)
+    smartfeldAktoren.oledWriteNum(lightWithLed)
     basic.pause(200)
 })
 ```
@@ -129,10 +129,10 @@ Now recreate this measurement function shown in the tooltip (the 💡 bulb in th
     * Finally return the rounded **maximum** using ``||functions:return 0||`` and ``||math:round||``.
 
 ```blocks
-function messeMax () {
-    ANZAHL_MESSUNGEN = 10
+function measureMax () {
+    numMeasurements = 10
     maximum = 0
-    for (let index = 0; index < ANZAHL_MESSUNGEN; index++) {
+    for (let index = 0; index < numMeasurements; index++) {
         maximum = Math.max(maximum, smartfeldSensoren.getHalfWord_Visible())
     }
     return Math.round(maximum)
@@ -150,10 +150,10 @@ function messeMax () {
 
 ```blocks
 // @hide
-function messeMax () {
-    ANZAHL_MESSUNGEN = 10
+function measureMax () {
+    numMeasurements = 10
     maximum = 0
-    for (let index = 0; index < ANZAHL_MESSUNGEN; index++) {
+    for (let index = 0; index < numMeasurements; index++) {
         if (smartfeldSensoren.getHalfWord_Visible() > maximum) {
             maximum = Math.max(maximum, smartfeldSensoren.getHalfWord_Visible())
         }
@@ -161,10 +161,10 @@ function messeMax () {
     return Math.round(maximum)
 }
 
-let h_mitLED = 0
-let h_umgebung = 0
+let lightWithLed = 0
+let ambientLight = 0
 let maximum = 0
-let ANZAHL_MESSUNGEN = 0
+let numMeasurements = 0
 smartfeldSensoren.initSunlight()
 smartfeldAktoren.oledInit(128, 64)
 let strip = neopixel.create(DigitalPin.P1, 16, NeoPixelMode.RGB)
@@ -175,15 +175,15 @@ basic.forever(function () {
     strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Black))
     strip.show()
     // @highlight
-    h_umgebung = messeMax()
-    smartfeldAktoren.oledWriteNum(h_umgebung)
+    ambientLight = measureMax()
+    smartfeldAktoren.oledWriteNum(ambientLight)
     smartfeldAktoren.oledWriteStr("-")
     basic.pause(200)
     strip.setPixelColor(2, neopixel.colors(NeoPixelColors.White))
     strip.show()
     // @highlight
-    h_mitLED = messeMax()
-    smartfeldAktoren.oledWriteNum(h_mitLED)
+    lightWithLed = measureMax()
+    smartfeldAktoren.oledWriteNum(lightWithLed)
     basic.pause(200)
 })
 ```
@@ -204,21 +204,21 @@ Let's try it.
 
 ```blocks
 // @hide
-function messeMax () {
-    ANZAHL_MESSUNGEN = 10
+function measureMax () {
+    numMeasurements = 10
     maximum = 0
-    for (let index = 0; index < ANZAHL_MESSUNGEN; index++) {
+    for (let index = 0; index < numMeasurements; index++) {
         if (smartfeldSensoren.getHalfWord_Visible() > maximum) {
             maximum = Math.max(maximum, smartfeldSensoren.getHalfWord_Visible())
         }
     }
     return Math.round(maximum)
 }
-let h_unterschied = 0
-let h_mitLED = 0
-let h_umgebung = 0
+let lightDifference = 0
+let lightWithLed = 0
+let ambientLight = 0
 let maximum = 0
-let ANZAHL_MESSUNGEN = 0
+let numMeasurements = 0
 smartfeldSensoren.initSunlight()
 smartfeldAktoren.oledInit(128, 64)
 let strip = neopixel.create(DigitalPin.P1, 16, NeoPixelMode.RGB)
@@ -228,14 +228,14 @@ basic.forever(function () {
     smartfeldAktoren.oledClear()
     strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Black))
     strip.show()
-    h_umgebung = messeMax()
+    ambientLight = measureMax()
     strip.setPixelColor(2, neopixel.colors(NeoPixelColors.White))
     strip.show()
-    h_mitLED = messeMax()
+    lightWithLed = measureMax()
     // @highlight
-    h_unterschied = h_mitLED - h_umgebung
+    lightDifference = lightWithLed - ambientLight
     // @highlight
-    smartfeldAktoren.oledWriteNum(h_unterschied)
+    smartfeldAktoren.oledWriteNum(lightDifference)
     basic.pause(200)
 })
 ```
@@ -259,44 +259,44 @@ Use ``||logic:if true then||``, ``||logic:0 < 0||``, and
 
 ```blocks
 // @hide
-function messeMax () {
-    ANZAHL_MESSUNGEN = 10
+function measureMax () {
+    numMeasurements = 10
     maximum = 0
-    for (let index = 0; index < ANZAHL_MESSUNGEN; index++) {
+    for (let index = 0; index < numMeasurements; index++) {
         if (smartfeldSensoren.getHalfWord_Visible() > maximum) {
             maximum = Math.max(maximum, smartfeldSensoren.getHalfWord_Visible())
         }
     }
     return Math.round(maximum)
 }
-let h_unterschied = 0
-let h_mitLED = 0
-let h_umgebung = 0
-let anzahlPersonenInWarteschlange = 0
+let lightDifference = 0
+let lightWithLed = 0
+let ambientLight = 0
+let peopleInQueueCount = 0
 let maximum = 0
-let ANZAHL_MESSUNGEN = 0
+let numMeasurements = 0
 smartfeldSensoren.initSunlight()
 smartfeldAktoren.oledInit(128, 64)
 let strip = neopixel.create(DigitalPin.P1, 16, NeoPixelMode.RGB)
 strip.setBrightness(255)
 
 basic.forever(function () {
-    anzahlPersonenInWarteschlange = 0
+    peopleInQueueCount = 0
     smartfeldAktoren.oledClear()
     strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Black))
     strip.show()
-    h_umgebung = messeMax()
+    ambientLight = measureMax()
     strip.setPixelColor(2, neopixel.colors(NeoPixelColors.White))
     strip.show()
-    h_mitLED = messeMax()
-    h_unterschied = h_mitLED - h_umgebung
-    smartfeldAktoren.oledWriteNum(h_unterschied)
+    lightWithLed = measureMax()
+    lightDifference = lightWithLed - ambientLight
+    smartfeldAktoren.oledWriteNum(lightDifference)
     // @highlight
-    if (h_unterschied < 100) {
-        anzahlPersonenInWarteschlange += 1
+    if (lightDifference < 100) {
+        peopleInQueueCount += 1
     }
     // @highlight
-    basic.showNumber(anzahlPersonenInWarteschlange)
+    basic.showNumber(peopleInQueueCount)
     basic.pause(200)
 })
 
@@ -310,29 +310,29 @@ If you look at the code in the ``forever`` loop in the tooltip (``|💡|`` bulb 
 
 ```blocks
 // @hide
-function messeMax () {
-    ANZAHL_MESSUNGEN = 10
+function measureMax () {
+    numMeasurements = 10
     maximum = 0
-    for (let index = 0; index < ANZAHL_MESSUNGEN; index++) {
+    for (let index = 0; index < numMeasurements; index++) {
         if (smartfeldSensoren.getHalfWord_Visible() > maximum) {
             maximum = Math.max(maximum, smartfeldSensoren.getHalfWord_Visible())
         }
     }
     return Math.round(maximum)
 }
-let h_unterschied = 0
-let h_mitLED = 0
-let h_umgebung = 0
-let anzahlPersonenInWarteschlange = 0
+let lightDifference = 0
+let lightWithLed = 0
+let ambientLight = 0
+let peopleInQueueCount = 0
 let maximum = 0
-let ANZAHL_MESSUNGEN = 0
+let numMeasurements = 0
 smartfeldSensoren.initSunlight()
 smartfeldAktoren.oledInit(128, 64)
 let strip = neopixel.create(DigitalPin.P1, 16, NeoPixelMode.RGB)
 strip.setBrightness(255)
 
 basic.forever(function () {
-    anzahlPersonenInWarteschlange = 0
+    peopleInQueueCount = 0
     smartfeldAktoren.oledClear()
 
     // @highlight
@@ -340,22 +340,22 @@ basic.forever(function () {
     // @highlight
     strip.show()
     // @highlight
-    h_umgebung = messeMax()
+    ambientLight = measureMax()
     // @highlight
     strip.setPixelColor(2, neopixel.colors(NeoPixelColors.White))
     // @highlight
     strip.show()
     // @highlight
-    h_mitLED = messeMax()
+    lightWithLed = measureMax()
     // @highlight
-    h_unterschied = h_mitLED - h_umgebung
+    lightDifference = lightWithLed - ambientLight
     // @highlight
-    smartfeldAktoren.oledWriteNum(h_unterschied)
+    smartfeldAktoren.oledWriteNum(lightDifference)
     // @highlight
-    if (h_unterschied < 100) {
-        anzahlPersonenInWarteschlange += 1
+    if (lightDifference < 100) {
+        peopleInQueueCount += 1
     }
-    basic.showNumber(anzahlPersonenInWarteschlange)
+    basic.showNumber(peopleInQueueCount)
     basic.pause(200)
 })
 
@@ -376,50 +376,50 @@ basic.forever(function () {
 
 ```blocks
 //@hide
-function messeMax () {
-    ANZAHL_MESSUNGEN = 10
+function measureMax () {
+    numMeasurements = 10
     maximum = 0
-    for (let index = 0; index < ANZAHL_MESSUNGEN; index++) {
+    for (let index = 0; index < numMeasurements; index++) {
         if (smartfeldSensoren.getHalfWord_Visible() > maximum) {
             maximum = Math.max(maximum, smartfeldSensoren.getHalfWord_Visible())
         }
     }
     return Math.round(maximum)
 }
-let h_unterschied = 0
-let h_mitLED = 0
-let h_umgebung = 0
-let anzahlPersonenInWarteschlange = 0
+let lightDifference = 0
+let lightWithLed = 0
+let ambientLight = 0
+let peopleInQueueCount = 0
 let maximum = 0
-let ANZAHL_MESSUNGEN = 0
+let numMeasurements = 0
 smartfeldSensoren.initSunlight()
 smartfeldAktoren.oledInit(128, 64)
 let strip = neopixel.create(DigitalPin.P1, 16, NeoPixelMode.RGB)
 strip.setBrightness(255)
 basic.forever(function () {
-    anzahlPersonenInWarteschlange = 0
+    peopleInQueueCount = 0
     smartfeldAktoren.oledClear()
     //@highlight
     for (let Index = 0; Index <= 8; Index++) {
         //@highlight
         strip.setPixelColor(Index + 2, neopixel.colors(NeoPixelColors.Black))
         strip.show()
-        h_umgebung = messeMax()
+        ambientLight = measureMax()
         //@highlight
         strip.setPixelColor(Index + 2, neopixel.colors(NeoPixelColors.White))
         strip.show()
-        h_mitLED = messeMax()
-        h_unterschied = h_mitLED - h_umgebung
-        smartfeldAktoren.oledWriteNum(h_unterschied)
+        lightWithLed = measureMax()
+        lightDifference = lightWithLed - ambientLight
+        smartfeldAktoren.oledWriteNum(lightDifference)
         //@highlight
         smartfeldAktoren.oledNewLine()
-        if (h_unterschied < 100) {
-            anzahlPersonenInWarteschlange += 1
+        if (lightDifference < 100) {
+            peopleInQueueCount += 1
         }
         //@highlight
         strip.clear()
     }
-    basic.showNumber(anzahlPersonenInWarteschlange)
+    basic.showNumber(peopleInQueueCount)
 })
 ```
 
@@ -462,54 +462,54 @@ Assign this block to the variable **zeile** (instead of **0**).
 
 ```blocks
 //@highlight
-function schreibeInfosAufDisplay (position: number, wert: number, _symbol: string) {
-    zeile = "P" + position + ": " + _symbol + " :" + wert
-    smartfeldAktoren.oledWriteStrNewLine(zeile)
+function writeInfoToDisplay (position: number, value: number, _symbol: string) {
+    line = "P" + position + ": " + _symbol + " :" + value
+    smartfeldAktoren.oledWriteStrNewLine(line)
 }
 //@hide
-function messeMax () {
-    ANZAHL_MESSUNGEN = 10
+function measureMax () {
+    numMeasurements = 10
     maximum = 0
-    for (let index = 0; index < ANZAHL_MESSUNGEN; index++) {
+    for (let index = 0; index < numMeasurements; index++) {
         if (smartfeldSensoren.getHalfWord_Visible() > maximum) {
             maximum = Math.max(maximum, smartfeldSensoren.getHalfWord_Visible())
         }
     }
     return Math.round(maximum)
 }
-let h_unterschied = 0
-let h_mitLED = 0
-let h_umgebung = 0
-let anzahlPersonenInWarteschlange = 0
+let lightDifference = 0
+let lightWithLed = 0
+let ambientLight = 0
+let peopleInQueueCount = 0
 let maximum = 0
-let ANZAHL_MESSUNGEN = 0
-let zeile = ""
+let numMeasurements = 0
+let line = ""
 smartfeldSensoren.initSunlight()
 smartfeldAktoren.oledInit(128, 64)
 let strip = neopixel.create(DigitalPin.P1, 16, NeoPixelMode.RGB)
 strip.setBrightness(255)
 basic.forever(function () {
-    anzahlPersonenInWarteschlange = 0
+    peopleInQueueCount = 0
     smartfeldAktoren.oledClear()
     for (let Index = 0; Index <= 8; Index++) {
         strip.setPixelColor(Index + 2, neopixel.colors(NeoPixelColors.Black))
         strip.show()
-        h_umgebung = messeMax()
+        ambientLight = measureMax()
         strip.setPixelColor(Index + 2, neopixel.colors(NeoPixelColors.White))
         strip.show()
-        h_mitLED = messeMax()
-        h_unterschied = h_mitLED - h_umgebung
-        if (h_unterschied < 100) {
+        lightWithLed = measureMax()
+        lightDifference = lightWithLed - ambientLight
+        if (lightDifference < 100) {
             //@highlight
-            schreibeInfosAufDisplay(Index, h_unterschied, "X")
-            anzahlPersonenInWarteschlange += 1
+            writeInfoToDisplay(Index, lightDifference, "X")
+            peopleInQueueCount += 1
         } else {
             //@highlight
-            schreibeInfosAufDisplay(Index, h_unterschied, "-")
+            writeInfoToDisplay(Index, lightDifference, "-")
         }
         strip.clear()
     }
-    basic.showNumber(anzahlPersonenInWarteschlange)
+    basic.showNumber(peopleInQueueCount)
 })
 
 ```
