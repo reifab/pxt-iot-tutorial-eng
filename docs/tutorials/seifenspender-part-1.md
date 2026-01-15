@@ -47,8 +47,8 @@ let hintFound = true;
 ## 🧼 Variable for the soap level
 To store the soap level of the dispenser, we use a variable.
 * To store the current soap level, we need a variable that shows the level in percent:
-``||variables:Make a Variable...||`` and name it **seifenstandInProzent** 🧼.
-* The dispenser is full at the beginning. Therefore, set the soap level to 100% in ``||basic:on start||`` using the variable: ``||variables:set seifenstandInProzent to 100||`` 🧼.
+``||variables:Make a Variable...||`` and name it **soapLevelPercent** 🧼.
+* The dispenser is full at the beginning. Therefore, set the soap level to 100% in ``||basic:on start||`` using the variable: ``||variables:set soapLevelPercent to 100||`` 🧼.
 
 ```blocks
 let soapLevelPercent = 100
@@ -56,9 +56,9 @@ let soapLevelPercent = 100
 
 ## 🧼 Show the soap level
 The goal is to show the current soap level on the IoT Cube.
-* Get the block ``||led:plot bar graph||``🟥 and place it in the **on start** block directly under the variable **seifenstandInProzent** 🧼.
-* Put the variable ``||variables:seifenstandInProzent||`` 🧼 in the first input of **plot bar graph of**.
-* Set the range from **seifenstandInProzent** 🧼 to 100.
+* Get the block ``||led:plot bar graph||``🟥 and place it in the **on start** block directly under the variable **soapLevelPercent** 🧼.
+* Put the variable ``||variables:soapLevelPercent||`` 🧼 in the first input of **plot bar graph of**.
+* Set the range from **soapLevelPercent** 🧼 to 100.
 * 📥 Press `|Download|` and check the LED display:
 
 🟥🟥🟥🟥🟥<br>
@@ -82,7 +82,7 @@ The goal is to reduce the soap level by 20% each time button A is pressed.
 For this we need a condition that checks whether button A is pressed. If it is pressed, the soap level should be reduced by 20%.
 * To add this condition, get the block ``||logic:if true then||`` and place it in the existing ``||basic:forever||`` loop.
 * Drag a new block ``||input:button A is pressed||`` into the **true** field.
-* Change the variable ``||variables:seifenstandInProzent||`` 🧼 by -20.
+* Change the variable ``||variables:soapLevelPercent||`` 🧼 by -20.
 * Plot the bar graph again.🟥 Duplicate this part from ``on start``.
 * At the end, slow down the ``||basic:forever||`` loop by 150 ms with ``||basic:pause (ms)||``.
 
@@ -103,8 +103,8 @@ basic.forever(function () {
 
 ## 🧼 Prevent the level from going below 0
 To avoid the level dropping below 0%, we need another condition that checks whether the soap level is below 0. If it is, set the soap level to 0%.
-* Under the block ``||variables:change seifenstandInProzent by -20||``, add another ``||logic:if true then||`` block and check whether ``||seifenstandInProzent < 0||``. If yes, set ``||variables:set seifenstandInProzent to 0||``.
-* Set the variable ``||variables:seifenstandInProzent||`` to 0% by setting the soap level 🧼 to 0.
+* Under the block ``||variables:change soapLevelPercent by -20||``, add another ``||logic:if true then||`` block and check whether ``||soapLevelPercent < 0||``. If yes, set ``||variables:set soapLevelPercent to 0||``.
+* Set the variable ``||variables:soapLevelPercent||`` to 0% by setting the soap level 🧼 to 0.
 [Here you can find more information about logical operators](https://makecode.microbit.org/blocks/logic/boolean)
 * 📥 Press `|Download|` and check the 🟥 LED display. Press button A several times until the soap level would drop below 0%.
 
@@ -138,7 +138,7 @@ Now we want to refill the soap level 🧼 when button B is pressed.
 We need a condition that checks whether button B is pressed. If it is, the soap level 🧼 should be set to 100%.
 * Get the block ``||logic:if true then||`` and place it in the existing ``||basic:forever||`` loop, above ``||basic:pause (ms)||``.
 * Drag the block ``||input:button A is pressed||`` into the **true** field and change button A to button **B**.
-* Set the soap level to 100% by setting the variable ``||variables:seifenstandInProzent||`` 🧼 to 100.
+* Set the soap level to 100% by setting the variable ``||variables:soapLevelPercent||`` 🧼 to 100.
 * Plot the bar graph again. Copy this part from ``on start``.
 * 📥 Press `|Download|` and check the 🟥 LED display.
 Does the soap level fill back up to 100%?

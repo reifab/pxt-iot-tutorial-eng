@@ -178,7 +178,7 @@ At the beginning the soap level is 100%.
 We want to send this after initializing the LoRa connection.
 
 * Under the function call ``||functions:initializeLoRaConnection||`` add the block ``||IoTCube:add unsigned integer with ID_0 = 0||``.
-* Replace the 0 with the variable ``||variables:seifenstandInProzent||``.
+* Replace the 0 with the variable ``||variables:soapLevelPercent||``.
 * Now send the soap level to the ☁️ cloud with ``||IoTCube:send data||``.
 * Press 📥`|Download|`.
 
