@@ -13,21 +13,21 @@ neopixel=github:microsoft/pxt-neopixel#v0.7.6
 
 ```template
 
-function schreibeInfosAufDisplay (position: number, wert: number, _symbol: string) {
-    zeile = "P" + position + ": " + _symbol + " :" + wert
-    smartfeldAktoren.oledWriteStrNewLine(zeile)
+function writeInfoToDisplay (position: number, value: number, _symbol: string) {
+    line = "P" + position + ": " + _symbol + " :" + value
+    smartfeldAktoren.oledWriteStrNewLine(line)
 }
-function messeMax () {
-    ANZAHL_MESSUNGEN = 10
+function measureMax () {
+    numMeasurements = 10
     maximum = 0
-    for (let index = 0; index < ANZAHL_MESSUNGEN; index++) {
+    for (let index = 0; index < numMeasurements; index++) {
         if (smartfeldSensoren.getHalfWord_Visible() > maximum) {
             maximum = Math.max(maximum, smartfeldSensoren.getHalfWord_Visible())
         }
     }
     return Math.round(maximum)
 }
-function initialisiereLoRaVerbindung () {
+function initializeLoRaConnection () {
     smartfeldAktoren.oledClear()
     smartfeldAktoren.oledWriteStr("Connecting")
     IoTCube.LoRa_Join(
@@ -45,55 +45,55 @@ function initialisiereLoRaVerbindung () {
     basic.pause(2000)
     smartfeldAktoren.oledClear()
 }
-function sendeUndZeigePersonenanzahl () {
-    IoTCube.addUnsignedInteger(eIDs.ID_0, anzahlPersonenInWarteschlange)
+function sendAndShowPeopleCount () {
+    IoTCube.addUnsignedInteger(eIDs.ID_0, peopleInQueueCount)
     IoTCube.SendBufferSimple()
-    basic.showNumber(anzahlPersonenInWarteschlange)
-    warte5SekundenUndZeigeFortschritt()
+    basic.showNumber(peopleInQueueCount)
+    wait5SecondsAndShowProgress()
 }
-function warte5SekundenUndZeigeFortschritt () {
+function wait5SecondsAndShowProgress () {
     smartfeldAktoren.oledClear()
-    for (let fortschritt = 0; fortschritt <= 100; fortschritt++) {
-        smartfeldAktoren.oledLoadingBar(fortschritt)
+    for (let progress = 0; progress <= 100; progress++) {
+        smartfeldAktoren.oledLoadingBar(progress)
         basic.pause(10)
     }
     smartfeldAktoren.oledClear()
 }
-let h_unterschied = 0
-let h_mitLED = 0
-let h_umgebung = 0
-let anzahlPersonenInWarteschlange = 0
+let lightDifference = 0
+let lightWithLed = 0
+let ambientLight = 0
+let peopleInQueueCount = 0
 let maximum = 0
-let ANZAHL_MESSUNGEN = 0
-let zeile = ""
+let numMeasurements = 0
+let line = ""
 smartfeldSensoren.initSunlight()
 smartfeldAktoren.oledInit(128, 64)
 let strip = neopixel.create(DigitalPin.P1, 16, NeoPixelMode.RGB)
 strip.setBrightness(255)
-initialisiereLoRaVerbindung()
-let anzahlPersonenVorher = -1
+initializeLoRaConnection()
+let previousPeopleInQueueCount = -1
 basic.forever(function () {
-    anzahlPersonenInWarteschlange = 0
+    peopleInQueueCount = 0
     smartfeldAktoren.oledClear()
     for (let Index = 0; Index <= 8; Index++) {
         strip.setPixelColor(Index + 2, neopixel.colors(NeoPixelColors.Black))
         strip.show()
-        h_umgebung = messeMax()
+        ambientLight = measureMax()
         strip.setPixelColor(Index + 2, neopixel.colors(NeoPixelColors.White))
         strip.show()
-        h_mitLED = messeMax()
-        h_unterschied = h_mitLED - h_umgebung
-        if (h_unterschied < 100) {
-            schreibeInfosAufDisplay(Index, h_unterschied, "X")
-            anzahlPersonenInWarteschlange += 1
+        lightWithLed = measureMax()
+        lightDifference = lightWithLed - ambientLight
+        if (lightDifference < 100) {
+            writeInfoToDisplay(Index, lightDifference, "X")
+            peopleInQueueCount += 1
         } else {
-            schreibeInfosAufDisplay(Index, h_unterschied, "-")
+            writeInfoToDisplay(Index, lightDifference, "-")
         }
         strip.clear()
     }
-    if (anzahlPersonenInWarteschlange != anzahlPersonenVorher) {
-        sendeUndZeigePersonenanzahl()
-        anzahlPersonenVorher = anzahlPersonenInWarteschlange
+    if (peopleInQueueCount != previousPeopleInQueueCount) {
+        sendAndShowPeopleCount()
+        previousPeopleInQueueCount = peopleInQueueCount
     }
 })
 

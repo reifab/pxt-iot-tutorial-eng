@@ -31,7 +31,7 @@ Click the 💡 icon if you need extra help and want to check your code.
 
 ```blocks
 // Great! You found the hint. Use it if you get stuck.
-let hinweisGefunden = true;
+let hintFound = true;
 ```
 
 ## 👁️ Prerequisites @showdialog
@@ -51,7 +51,7 @@ To store the soap level of the dispenser, we use a variable.
 * The dispenser is full at the beginning. Therefore, set the soap level to 100% in ``||basic:on start||`` using the variable: ``||variables:set seifenstandInProzent to 100||`` 🧼.
 
 ```blocks
-let seifenstandInProzent = 100
+let soapLevelPercent = 100
 ```
 
 ## 🧼 Show the soap level
@@ -69,10 +69,10 @@ The goal is to show the current soap level on the IoT Cube.
 Are all LEDs on?
 
 ```blocks
-let seifenstandInProzent = 100
+let soapLevelPercent = 100
 // @highlight
 led.plotBarGraph(
-seifenstandInProzent,
+soapLevelPercent,
 100
 )
 ```
@@ -90,9 +90,9 @@ For this we need a condition that checks whether button A is pressed. If it is p
 basic.forever(function () {
     // @highlight
     if (input.buttonIsPressed(Button.A)) {
-        seifenstandInProzent += -20
+        soapLevelPercent += -20
         led.plotBarGraph(
-            seifenstandInProzent,
+            soapLevelPercent,
             100
         )
     }
@@ -118,14 +118,14 @@ What happens? Does the display stay at 0?
 ```blocks
 basic.forever(function () {
     if (input.buttonIsPressed(Button.A)) {
-        seifenstandInProzent += -20
+        soapLevelPercent += -20
         // @highlight
-        if(seifenstandInProzent<0){
+        if(soapLevelPercent<0){
             // @highlight
-            seifenstandInProzent = 0
+            soapLevelPercent = 0
         }
         led.plotBarGraph(
-            seifenstandInProzent,
+            soapLevelPercent,
             100
         )
     }
@@ -146,23 +146,23 @@ Does the soap level fill back up to 100%?
 ```blocks
 basic.forever(function () {
     if (input.buttonIsPressed(Button.A)) {
-        seifenstandInProzent += -20
+        soapLevelPercent += -20
         
-        if(seifenstandInProzent<0){
+        if(soapLevelPercent<0){
            
-            seifenstandInProzent = 0
+            soapLevelPercent = 0
         }
         led.plotBarGraph(
-            seifenstandInProzent,
+            soapLevelPercent,
             100
         )
     }
     // @highlight
     if (input.buttonIsPressed(Button.B)) {
         // @highlight
-        seifenstandInProzent = 100
+        soapLevelPercent = 100
         led.plotBarGraph(
-            seifenstandInProzent,
+            soapLevelPercent,
             100
         )
     }
