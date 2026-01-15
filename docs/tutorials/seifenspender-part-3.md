@@ -134,8 +134,8 @@ function initializeLoRaConnection () {
 
 * Connect the ultrasonic sensor 🦇 to J1.
 * To store the measured distance 📏 between soap and sensor, we need a variable.
-``||variables:Make a Variable...||`` and name it **distanzSensorZuSeife**.
-* Drag the block ``||variables:set distanzSensorZuSeife to 0||`` to the top of the forever loop.
+``||variables:Make a Variable...||`` and name it **distanceSensorToSoap**.
+* Drag the block ``||variables:set distanceSensorToSoap to 0||`` to the top of the forever loop.
 * To assign the measured value to the variable, insert the block ``||SmartfeldSensoren:distance in cm||`` instead of the 0. Leave the pin on P0.
 
 ```blocks
@@ -173,7 +173,7 @@ The sensor gives the distance in cm. To check that the sensor works, we show the
 * Place the block 🖥️ ``||SmartfeldAktoren:clear display||`` at the top of the forever loop.
 This clears existing content on the OLED display 🖥️.
 * Under the variable, add the block ``||SmartfeldAktoren:write number||``.
-* Replace the 0 with the variable ``||variables:distanzSensorZuSeife||``.
+* Replace the 0 with the variable ``||variables:distanceSensorToSoap||``.
 * Round the value to whole numbers using ``||math:round||``.
 * Write the unit **cm** after the value using ``||SmartfeldAktoren:write string||``.
 * Press 📥`|Download|` and check the OLED display 🖥️. Is the distance between the sensor and obstacle shown?
@@ -226,8 +226,8 @@ It is recommended to glue the model to cardboard or thicker paper. This makes it
 
 ## Calculate the soap level 🧼
 
-* From the measurement distanzSensorZuSeife you can calculate the soap level 🧼 in %. Do you see the relationships when you study the image below?
-* Calculate the soap level in percent. Use ``||math:Math||`` and ``||variables:set seifenstandInProzent to ...||``.
+* From the measurement distanceSensorToSoap you can calculate the soap level 🧼 in %. Do you see the relationships when you study the image below?
+* Calculate the soap level in percent. Use ``||math:Math||`` and ``||variables:set soapLevelPercent to ...||``.
 You may create another variable for intermediate results.
 * Round the soap level to whole numbers with ``||math:round||``.
 * Soap levels below 0% should be limited to 0%. Use ``||logic:if true then||``.
@@ -286,11 +286,11 @@ function wait5SecondsAndShowProgress () {
 Because we want to send the soap level only when it changes, we need to extend the program with a variable that detects changes.
 
 * To detect changes in the soap level, we need to store the old value. Create a new variable with
-``||variables:Make a Variable...||`` and name it **seifenstandAlt**.
-* In ``||basic:on start||`` set ``||variables:set seifenstandAlt to -1||`` (or any value that is different from reality at the first run).
+``||variables:Make a Variable...||`` and name it **previousSoapLevelPercent**.
+* In ``||basic:on start||`` set ``||variables:set previousSoapLevelPercent to -1||`` (or any value that is different from reality at the first run).
 * In the existing ``||basic:forever||`` loop there is a ``||logic:if false then||`` block that prevents sending.
-Modify it for your purpose: use ``||logic:comparison 0 ≠ 0||`` to check if ``||variables:seifenstandAlt||`` and ``||variables:seifenstandInProzent||`` are different.
-If yes, send the current value to the cloud (already present) and set ``||variables:set seifenstandAlt to seifenstandInProzent||``.
+Modify it for your purpose: use ``||logic:comparison 0 ≠ 0||`` to check if ``||variables:previousSoapLevelPercent||`` and ``||variables:soapLevelPercent||`` are different.
+If yes, send the current value to the cloud (already present) and set ``||variables:set previousSoapLevelPercent to soapLevelPercent||``.
 * In **on start**, set the condition back to **true** so the connection setup runs again.
 
 ```blocks
