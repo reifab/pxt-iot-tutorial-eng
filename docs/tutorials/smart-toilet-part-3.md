@@ -65,8 +65,8 @@ The magnetic switch provides a digital signal that we can read easily:
 
 To detect the door state continuously, we read the sensor in the existing ``||basic:forever||`` loop and translate the signal into "open" or "closed".
 
-* ``||variables:Make a Variable...||`` and name it **zustandTür**.
-* At the top of the ``||basic:forever||`` loop set **zustandTür** to the state measured at pin P2. Use the blocks ``||variables:set zustandTür to 0||`` and ``||SmartfeldSensoren:detect magnetic field||`` (under ••• Mechanical Sensors) and replace the 0 with the "detect magnetic field" block.
+* ``||variables:Make a Variable...||`` and name it **doorState**.
+* At the top of the ``||basic:forever||`` loop set **doorState** to the state measured at pin P2. Use the blocks ``||variables:set doorState to 0||`` and ``||SmartfeldSensoren:detect magnetic field||`` (under ••• Mechanical Sensors) and replace the 0 with the "detect magnetic field" block.
 * In the "detect magnetic field" block change P0 to **P2** and make sure the magnetic switch is connected to **J3**.
 
 ```blocks
@@ -121,7 +121,7 @@ basic.forever(function () {
 If the door is closed, we assume the toilet is **occupied**. Otherwise we assume the toilet is **free**. We want to display these states and send them to Clavis Cloud via LoRa 🛜, which is already prepared as a function.
 
 * Add an ``||logic:if true then||`` block below the magnetic switch reading.
-* Use ``||logic:comparison 0 = 0||`` to check whether ``||variables:zustandTür||`` is 1 (door closed). Place the comparison in the ``||logic:if true then||`` block instead of **true**.
+* Use ``||logic:comparison 0 = 0||`` to check whether ``||variables:doorState||`` is 1 (door closed). Place the comparison in the ``||logic:if true then||`` block instead of **true**.
 * If that is the case, call ``||function:call macheBesetzt||``, otherwise ``||function:call macheFrei||``. (The functions are in **Advanced** - open it if needed.)
 * Click 📥 `|Download|`.
 * Check if the status change (free or occupied) is shown in the cloud:
@@ -187,12 +187,12 @@ basic.forever(function () {
 Right now data is sent every 5 seconds, even if the status has not changed.
 That costs unnecessary energy. It makes more sense to send only when the door status changes.
 
-* ``||variables:Make a Variable...||`` and name it **zustandTürDavor**.
-* At the very end of the ``on start`` block set ``||variables:zustandTürDavor||`` to -1 so it definitely differs from the first measured value: ``||variables:set zustandTürDavor to -1||``.
-* In the ``||basic:forever||`` loop, before **if spaeterSenden then**, check whether ``||variables:zustandTür||`` and ``||variables:zustandTürDavor||`` are different (≠ comparison). If yes, update **zustandTürDavor** and only then run the existing logic. For example:
+* ``||variables:Make a Variable...||`` and name it **previousDoorState**.
+* At the very end of the ``on start`` block set ``||variables:previousDoorState||`` to -1 so it definitely differs from the first measured value: ``||variables:set previousDoorState to -1||``.
+* In the ``||basic:forever||`` loop, before **if spaeterSenden then**, check whether ``||variables:doorState||`` and ``||variables:previousDoorState||`` are different (≠ comparison). If yes, update **previousDoorState** and only then run the existing logic. For example:
   * Use ``||logic:if true then||`` and ``||logic:0 ≠ 0||`` (to compare the two variables).
-  * Replace the zeros with the variables ``||variables:zustandTür||`` and ``||variables:zustandTürDavor||``.
-  * If the condition is met, ``||variables:set zustandTürDavor to zustandTür||``.
+  * Replace the zeros with the variables ``||variables:doorState||`` and ``||variables:previousDoorState||``.
+  * If the condition is met, ``||variables:set previousDoorState to doorState||``.
   * Now move your previous check (door = 1) into this new if block.
   Select the if block to move, press ctrl+X to cut and ctrl+V to paste.
   This makes the display and sending happen only when the door status changes.
